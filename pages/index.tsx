@@ -1,29 +1,27 @@
 import React from "react"
 import { GetStaticProps } from "next"
 import Layout from "../components/Layout"
-import Post, { PostProps } from "../components/Post"
+import Batch, { BatchProps } from "../components/Batch"
+
+import prisma from '../lib/prisma';
 
 export const getStaticProps: GetStaticProps = async () => {
-  const feed = [
-    {
-      id: "1",
-      title: "Prisma is the perfect ORM for Next.js",
-      content: "[Prisma](https://github.com/prisma/prisma) and Next.js go _great_ together!",
-      published: false,
-      author: {
-        name: "Nikolas Burk",
-        email: "burk@prisma.io",
+  const batches = await prisma.batch.findMany({
+    where: { 
+      startDate: {
+        lte: new Date() 
       },
-    },
-  ]
-  return { 
-    props: { feed }, 
-    revalidate: 10 
-  }
-}
+      endDate: {
+        gte: new Date() }
+      }
+  });
+  return {
+    props: { batches }
+  };
+};
 
 type Props = {
-  feed: PostProps[]
+  batches: BatchProps[]
 }
 
 const Blog: React.FC<Props> = (props) => {
@@ -32,24 +30,24 @@ const Blog: React.FC<Props> = (props) => {
       <div className="page">
         <h1>Public Feed</h1>
         <main>
-          {props.feed.map((post) => (
-            <div key={post.id} className="post">
-              <Post post={post} />
+          {props.batches.map((batch) => (
+            <div key={batch.id} className="batch">
+              <Batch batch={batch} />
             </div>
           ))}
         </main>
       </div>
       <style jsx>{`
-        .post {
+        .batch {
           background: white;
           transition: box-shadow 0.1s ease-in;
         }
 
-        .post:hover {
+        .batch:hover {
           box-shadow: 1px 1px 3px #aaa;
         }
 
-        .post + .post {
+        .batch + .batch {
           margin-top: 2rem;
         }
       `}</style>
