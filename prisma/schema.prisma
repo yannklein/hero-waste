@@ -1,0 +1,75 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+enum BatchCategory {
+  WEB
+  DATA
+}
+
+enum TrashCategory {
+  BURNABLE
+  GLASS
+  PLASTIC_BOTTLE
+  CANS
+}
+
+enum DisposalCategory {
+  REGULAR
+  PENALTY
+}
+
+model TrashCan {
+  id              String    @default(cuid()) @id
+  capacity        Int
+  category        TrashCategory
+  batchCategory   BatchCategory
+  disposal        Disposal[]
+  createdAt       DateTime  @default(now()) @map(name: "created_at")
+  updatedAt       DateTime  @updatedAt @map(name: "updated_at")
+  @@map(name: "trash_cans")
+}
+
+model Batch {
+  id            String    @default(cuid()) @id
+  name          String
+  size          Int
+  startDate     DateTime
+  endDate       DateTime
+  category      BatchCategory
+  users         User[]
+  disposal      Disposal[]
+  createdAt     DateTime  @default(now()) @map(name: "created_at")
+  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
+  @@map(name: "batches")
+}
+
+model Disposal {
+  id              String    @default(cuid()) @id
+  category        DisposalCategory @default(REGULAR)
+  batchCategory   BatchCategory
+  batch           Batch?    @relation(fields: [batchId], references: [id])
+  batchId         String?
+  trashCan        TrashCan? @relation(fields: [trashCanId], references: [id])
+  trashCanId      String?
+  createdAt       DateTime  @default(now()) @map(name: "created_at")
+  updatedAt       DateTime  @updatedAt @map(name: "updated_at")
+  @@map(name: "disposals")
+}
+
+model User {
+  id            String    @default(cuid()) @id
+  name          String
+  email         String    @unique
+  batch         Batch?    @relation(fields: [batchId], references: [id])
+  batchId       String?
+  createdAt     DateTime  @default(now()) @map(name: "created_at")
+  updatedAt     DateTime  @updatedAt @map(name: "updated_at")
+  @@map(name: "users")
+}
