@@ -7,16 +7,16 @@ export type BatchProps = {
   id: string;
   name: string;
   size: Number;
-  startDate: String;
-  endDate: String;
+  startDate: Date;
+  endDate: Date;
   category: BatchCategory;
-  createdAt: String;
-  updatedAt: String;
+  createdAt: Date;
+  updatedAt: Date;
 };
 
 const Batch: React.FC<{ batch: BatchProps }> = ({ batch }) => {
   return (
-    <div onClick={() => Router.push("/p/[id]", `/p/${batch.id}`)}>
+    <div onClick={() => Router.push("/batches/[id]", `/batches/${batch.id}`)}>
       <h2>{batch.name}</h2>
       <small>Grouping {batch.size} {batch.category.toLowerCase()} students</small>
     </div>

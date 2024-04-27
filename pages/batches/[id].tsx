@@ -11,6 +11,10 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
       id: String(params?.id),
     }
   });
+  batch.createdAt = JSON.parse(JSON.stringify(batch.createdAt))
+  batch.updatedAt = JSON.parse(JSON.stringify(batch.updatedAt))
+  batch.startDate = JSON.parse(JSON.stringify(batch.startDate))
+  batch.endDate = JSON.parse(JSON.stringify(batch.endDate))
   return {
     props: batch,
   };

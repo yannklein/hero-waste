@@ -16,10 +16,10 @@ export const getStaticProps: GetStaticProps = async () => {
       }
   });
   batches.forEach((batch) => {
-    batch.createdAt = batch.createdAt.toISOString()
-    batch.updatedAt = batch.updatedAt.toISOString()
-    batch.startDate = batch.startDate.toISOString()
-    batch.endDate = batch.endDate.toISOString()
+    batch.createdAt = JSON.parse(JSON.stringify(batch.createdAt))
+    batch.updatedAt = JSON.parse(JSON.stringify(batch.updatedAt))
+    batch.startDate = JSON.parse(JSON.stringify(batch.startDate))
+    batch.endDate = JSON.parse(JSON.stringify(batch.endDate))
   });
   return {
     props: { batches }
