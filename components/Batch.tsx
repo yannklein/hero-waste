@@ -7,11 +7,11 @@ export type BatchProps = {
   id: string;
   name: string;
   size: Number;
-  startDate: Date;
-  endDate: Date;
+  startDate: String;
+  endDate: String;
   category: BatchCategory;
-  createdAt: Date;
-  updatedAt: Date;
+  createdAt: String;
+  updatedAt: String;
 };
 
 const Batch: React.FC<{ batch: BatchProps }> = ({ batch }) => {

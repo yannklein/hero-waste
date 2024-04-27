@@ -15,6 +15,12 @@ export const getStaticProps: GetStaticProps = async () => {
         gte: new Date() }
       }
   });
+  batches.forEach((batch) => {
+    batch.createdAt = batch.createdAt.toISOString()
+    batch.updatedAt = batch.updatedAt.toISOString()
+    batch.startDate = batch.startDate.toISOString()
+    batch.endDate = batch.endDate.toISOString()
+  });
   return {
     props: { batches }
   };
