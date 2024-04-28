@@ -44,7 +44,7 @@ model Batch {
   endDate       DateTime
   category      BatchCategory
   users         User[]
-  disposal      Disposal[]
+  disposals     Disposal[]
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @updatedAt @map(name: "updated_at")
   @@map(name: "batches")
@@ -54,10 +54,10 @@ model Disposal {
   id              String    @default(cuid()) @id
   category        DisposalCategory @default(REGULAR)
   batchCategory   BatchCategory
-  batch           Batch?    @relation(fields: [batchId], references: [id])
-  batchId         String?
-  trashCan        TrashCan? @relation(fields: [trashCanId], references: [id])
-  trashCanId      String?
+  batch           Batch    @relation(fields: [batchId], references: [id])
+  batchId         String
+  trashCan        TrashCan @relation(fields: [trashCanId], references: [id])
+  trashCanId      String
   createdAt       DateTime  @default(now()) @map(name: "created_at")
   updatedAt       DateTime  @updatedAt @map(name: "updated_at")
   @@map(name: "disposals")

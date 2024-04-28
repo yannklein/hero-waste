@@ -4,6 +4,7 @@ import Layout from "../components/Layout"
 import Batch, { BatchProps } from "../components/Batch"
 
 import prisma from '../lib/prisma';
+import { log } from "console";
 
 export const getStaticProps: GetStaticProps = async () => {
   const batches = await prisma.batch.findMany({
@@ -15,27 +16,36 @@ export const getStaticProps: GetStaticProps = async () => {
         gte: new Date() }
       }
   });
-  const serializedBatches = batches.map((batch) => ({
+  
+  for ( let batch of batches) {
+    batch.score = await batch.score
+  }
+  
+  const serializedBatches = batches.map( (batch) => ({
     ...batch,
     createdAt: batch.createdAt.toJSON(),
     updatedAt: batch.updatedAt.toJSON(),
     startDate: batch.startDate.toJSON(),
     endDate: batch.endDate.toJSON()
   }));
+  // console.log(batches[0]);
+  
   return {
     props: { serializedBatches }
   };
 };
 
 type Props = {
-  serializedBatches: BatchProps[]
+  serializedBatches: BatchProps[],
+  scores: Number[]
 }
 
-const Blog: React.FC<Props> = (props) => {
+
+const Blog: React.FC<Props> = (props) => {  
   return (
     <Layout>
       <div className="page">
-        <h1>Public Feed</h1>
+        <h1>Hero Waste</h1>
         <main>
           {props.serializedBatches.map((batch) => (
             <div key={batch.id} className="batch">
