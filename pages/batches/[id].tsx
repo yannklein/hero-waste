@@ -11,12 +11,15 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
       id: String(params?.id),
     }
   });
-  batch.createdAt = JSON.parse(JSON.stringify(batch.createdAt))
-  batch.updatedAt = JSON.parse(JSON.stringify(batch.updatedAt))
-  batch.startDate = JSON.parse(JSON.stringify(batch.startDate))
-  batch.endDate = JSON.parse(JSON.stringify(batch.endDate))
+  const serializeBatch = {
+    ...batch,
+    createdAt: batch.createdAt.toJSON(),
+    updatedAt: batch.updatedAt.toJSON(),
+    startDate: batch.startDate.toJSON(),
+    endDate: batch.endDate.toJSON()
+  }
   return {
-    props: batch,
+    props: serializeBatch,
   };
 }
 

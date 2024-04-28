@@ -15,19 +15,20 @@ export const getStaticProps: GetStaticProps = async () => {
         gte: new Date() }
       }
   });
-  batches.forEach((batch) => {
-    batch.createdAt = JSON.parse(JSON.stringify(batch.createdAt))
-    batch.updatedAt = JSON.parse(JSON.stringify(batch.updatedAt))
-    batch.startDate = JSON.parse(JSON.stringify(batch.startDate))
-    batch.endDate = JSON.parse(JSON.stringify(batch.endDate))
-  });
+  const serializedBatches = batches.map((batch) => ({
+    ...batch,
+    createdAt: batch.createdAt.toJSON(),
+    updatedAt: batch.updatedAt.toJSON(),
+    startDate: batch.startDate.toJSON(),
+    endDate: batch.endDate.toJSON()
+  }));
   return {
-    props: { batches }
+    props: { serializedBatches }
   };
 };
 
 type Props = {
-  batches: BatchProps[]
+  serializedBatches: BatchProps[]
 }
 
 const Blog: React.FC<Props> = (props) => {
@@ -36,7 +37,7 @@ const Blog: React.FC<Props> = (props) => {
       <div className="page">
         <h1>Public Feed</h1>
         <main>
-          {props.batches.map((batch) => (
+          {props.serializedBatches.map((batch) => (
             <div key={batch.id} className="batch">
               <Batch batch={batch} />
             </div>
