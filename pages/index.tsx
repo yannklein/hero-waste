@@ -19,11 +19,6 @@ export const getStaticProps: GetStaticProps = async () => {
     }
   });
   
-  for ( let batch of batches) {
-    batch.score = await batch.score
-    batch.lastWeekDisposals = await batch.lastWeekDisposals
-  }
-  
   return {
     props: { batches }
   };

@@ -17,9 +17,7 @@ export type BatchProps = {
   updatedAt: Date;
 };
 
-const Batch: React.FC<{ batch: BatchProps }> = ({ batch }) => {
-  console.log(batch.score);
-  
+const Batch: React.FC<{ batch: BatchProps }> = ({ batch }) => {  
   return (
     <div onClick={() => Router.push("/batches/[id]", `/batches/${batch.id}`)}>
       <h2>{batch.name}</h2>

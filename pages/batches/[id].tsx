@@ -7,13 +7,15 @@ import prisma from '../../lib/prisma';
 
 export const getServerSideProps: GetServerSideProps = async ({ params }) => {
   const batch = await prisma.batch.findUnique({
+    select: {
+      size: true,
+      category: true,
+      name: true,
+    },
     where: {
       id: String(params?.id),
     }
   });
-
-  batch.score = await batch.score
-  batch.lastWeekDisposals = await batch.lastWeekDisposals
 
   return {
     props: batch,
