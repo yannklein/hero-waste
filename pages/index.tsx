@@ -1,63 +1,98 @@
-import React from "react"
-import { GetStaticProps } from "next"
-import Layout from "../components/Layout"
-import Batch, { BatchProps } from "../components/Batch"
+import React from 'react';
+import { GetStaticProps } from 'next';
+import Layout from '../components/Layout';
+import Header from '../components/Header';
+import Batch, { BatchProps } from '../components/Batch';
+
+import { bangers } from '../styles/fonts';
+
+import Image from 'next/image';
+import lightning from '../public/lightning.png';
 
 import prisma from '../lib/prisma';
 
 export const getStaticProps: GetStaticProps = async () => {
   const batches = await prisma.batch.findMany({
     include: {
-      disposals: true
+      disposals: {},
     },
-    where: { 
+    where: {
       startDate: {
-        lte: new Date() 
+        lte: new Date(),
       },
       endDate: {
-        gte: new Date() }
-    }
+        gte: new Date(),
+      },
+    },
   });
-  
+
   return {
-    props: { batches }
+    props: { batches },
   };
 };
 
 type Props = {
-  batches: BatchProps[],
-}
+  batches: BatchProps[];
+};
 
-
-const Blog: React.FC<Props> = (props) => {  
+const Blog: React.FC<Props> = ({ batches }) => {
   return (
-    <Layout>
-      <div className="page">
-        <h1>Bat(ch)tle</h1>
-        <main>
-          {props.batches.map((batch) => (
-            <div key={batch.id} className="batch">
-              <Batch batch={batch} />
-            </div>
-          ))}
-        </main>
-      </div>
-      <style jsx>{`
-        .batch {
-          background: white;
-          transition: box-shadow 0.1s ease-in;
-        }
+    <>
+      <Header />
+      <Layout>
+        <div className={`page ${bangers.className}`}>
+          <h1>Today's Bat(ch)tle</h1>
+          <main className="batches">
+            {batches.map(batch => 
+              <div key={batch.id} className="batch">
+                <Batch batch={batch} />
+              </div>
+            )}
+            <Image
+              className="lightning"
+              src={lightning}
+              alt="Hero Waste app logo"
+              width='200'
+              style={{
+                position: 'absolute',
+                left: '50%',
+                top: '50%',
+                transform: 'translate(-50%, -50%)'
+              }}
+            />
+          </main>
+        </div>
+        <style jsx>{`
+          .page {
+            text-align: center;
+          }
+          .page h1 {
+            font-size: 43px;
+            color: white;
+            text-shadow: 4px 4px 5px rgb(0, 0, 0);
+          }
+          .batches {
+            display: flex;
+            justify-content: space-around;
+            position: relative;
+          }
 
-        .batch:hover {
-          box-shadow: 1px 1px 3px #aaa;
-        }
+          .batch {
+            background: #081834;
+            transition: box-shadow 0.1s ease-in;
+          }
 
-        .batch + .batch {
-          margin-top: 2rem;
-        }
-      `}</style>
-    </Layout>
-  )
-}
+          .batch:hover {
+            box-shadow: 1px 1px 3px #aaa;
+          }
 
-export default Blog
+          .batch + .batch {
+            margin-top: 2rem;
+          }
+        `}</style>
+      </Layout>
+    </>
+  );
+};
+
+export default Blog;
