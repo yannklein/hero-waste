@@ -1,5 +1,5 @@
 import React, { ReactNode } from "react";
-import Header from "./Header";
+import { Inter } from 'next/font/google'
 
 type Props = {
   children: ReactNode;
@@ -7,7 +7,6 @@ type Props = {
 
 const Layout: React.FC<Props> = (props) => (
   <div>
-    <Header />
     <div className="layout">{props.children}</div>
     <style jsx global>{`
       html {
@@ -24,24 +23,16 @@ const Layout: React.FC<Props> = (props) => (
         margin: 0;
         padding: 0;
         font-size: 16px;
+        
+        color: white;
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
           Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji",
           "Segoe UI Symbol";
-        background: rgba(0, 0, 0, 0.05);
-      }
-
-      input,
-      textarea {
-        font-size: 16px;
-      }
-
-      button {
-        cursor: pointer;
+        background: #04477A;
       }
     `}</style>
     <style jsx>{`
       .layout {
-        padding: 0 2rem;
       }
     `}</style>
   </div>
