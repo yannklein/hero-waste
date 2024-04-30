@@ -38,7 +38,7 @@ type Props = {
 const Blog: React.FC<Props> = ({ batches }) => {
   return (
     <>
-      <Header />
+      <Header/>
       <Layout>
         <div className={`page ${bangers.className}`}>
           <h1>Today's Bat(ch)tle</h1>
@@ -75,11 +75,6 @@ const Blog: React.FC<Props> = ({ batches }) => {
             display: flex;
             justify-content: space-around;
             position: relative;
-          }
-
-          .batch {
-            background: #081834;
-            transition: box-shadow 0.1s ease-in;
           }
 
           .batch:hover {
