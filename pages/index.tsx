@@ -93,6 +93,7 @@ const Blog: React.FC<Props> = ({ batches, winner }) => {
             position: relative;
             flex-grow: 1;
             padding-bottom: 40px; 
+            min-height: 300px;
           }
           .winner {
             align-self: flsex-start;
