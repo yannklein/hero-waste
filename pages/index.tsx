@@ -42,6 +42,7 @@ const Blog: React.FC<Props> = ({ batches, winner }) => {
   
   return (
     <>
+    <div className="frame">
       <Header/>
       <Layout>
         <div className={`page ${bangers.className}`}>
@@ -66,12 +67,23 @@ const Blog: React.FC<Props> = ({ batches, winner }) => {
             />
           </main>
         </div>
-        <style jsx>{`
+      </Layout>
+    </div>
+    <style jsx>{`
+        .frame {
+          height: 100vh;
+          display: flex;
+          flex-direction: column;
+        }
           .page {
+            flex-grow: 1;
             text-align: center;
+            display: flex;
+            flex-direction: column;
           }
           .page h1 {
             font-size: 43px;
+            margin: 16px 0;
             color: white;
             text-shadow: 4px 4px 5px rgb(0, 0, 0);
           }
@@ -79,7 +91,8 @@ const Blog: React.FC<Props> = ({ batches, winner }) => {
             display: flex;
             justify-content: space-around;
             position: relative;
-            height: 300px;
+            flex-grow: 1;
+            padding-bottom: 40px; 
           }
           .winner {
             align-self: flsex-start;
@@ -88,7 +101,6 @@ const Blog: React.FC<Props> = ({ batches, winner }) => {
             align-self: flex-end;
           }
         `}</style>
-      </Layout>
     </>
   );
 };

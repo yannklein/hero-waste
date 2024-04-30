@@ -6,7 +6,7 @@ type Props = {
 };
 
 const Layout: React.FC<Props> = (props) => (
-  <div>
+  <>
     <div className="layout">{props.children}</div>
     <style jsx global>{`
       html {
@@ -23,6 +23,9 @@ const Layout: React.FC<Props> = (props) => (
         margin: 0;
         padding: 0;
         font-size: 16px;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
         
         color: white;
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
@@ -33,9 +36,11 @@ const Layout: React.FC<Props> = (props) => (
     `}</style>
     <style jsx>{`
       .layout {
+        flex-grow: 1;
+        display: flex;
       }
     `}</style>
-  </div>
+  </>
 );
 
 export default Layout;
