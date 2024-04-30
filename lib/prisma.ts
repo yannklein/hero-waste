@@ -12,15 +12,13 @@ type BatchExtended = {
   startDate?: Date;
   endDate?: Date;
   disposals?: Disposal[];
+  score?: Number;
 };
 
 prisma = new PrismaClient().$extends({
   result: {
     batch: {
       lastWeekDisposals: {
-        include: {
-          disposals: true,
-        },
         // include: {
         //   disposals: {
         //     where: {
@@ -34,6 +32,9 @@ prisma = new PrismaClient().$extends({
         // compute(batch: BatchExtended) {
         //   return batch.disposals.length
         // },
+        include: {
+          disposals: true,
+        },
         compute(batch: BatchExtended) {
           return batch.disposals.filter(
             (disp) =>
@@ -46,10 +47,10 @@ prisma = new PrismaClient().$extends({
         needs: {
           id: true,
           startDate: true,
-          endDate: true
+          endDate: true,
         },
         include: {
-          disposals: true
+          disposals: true,
         },
         compute(batch: BatchExtended) {
           const totalLength =
@@ -58,8 +59,45 @@ prisma = new PrismaClient().$extends({
           const currentLength =
             (new Date().getTime() - batch.startDate.getTime()) / (24 * 60000);
 
-          return Math.round((currentLength * 100) / totalLength - batch.disposals.length * 1);
+          return Math.round(
+            (currentLength * 100) / totalLength - batch.disposals.length * 1,
+          );
         },
+      },
+    },
+  }}).$extends({
+  model: {
+    batch: {
+      async winningBatch() {
+        const result = await prisma.$queryRawUnsafe(`
+        with batch_info as (
+          SELECT 
+            EXTRACT(DAY from (b.end_date - b.start_date)) AS total_days,
+            EXTRACT(DAY from (b.end_date - NOW())) AS day_count,
+            *
+          from batches b
+          ), scores as (
+          SELECT 
+            ROUND(AVG(bi.day_count) * 100 / AVG(bi.total_days)) - COUNT(d.id) as score,
+            bi.id
+          FROM batch_info as bi
+          JOIN disposals d ON bi.id = d.batch_id
+          group by bi.id
+          )
+          SELECT
+            b.*,
+            b.start_date as "startDate",
+            b.end_date as "endDate",
+            b.created_at as "createdAt",
+            b.updated_at as "updatedAt"
+
+          from batches b
+          join scores s on s.id = b.id
+          order by s.score
+          limit 1
+        `);
+  
+        return result[0];
       },
     },
   },

@@ -29,7 +29,7 @@ model TrashCan {
   id              String    @default(cuid()) @id
   capacity        Int
   category        TrashCategory
-  batchCategory   BatchCategory
+  batchCategory   BatchCategory @map(name: "batch_category")
   disposal        Disposal[]
   createdAt       DateTime  @default(now()) @map(name: "created_at")
   updatedAt       DateTime  @updatedAt @map(name: "updated_at")
@@ -40,8 +40,8 @@ model Batch {
   id            String    @default(cuid()) @id
   name          String
   size          Int
-  startDate     DateTime
-  endDate       DateTime
+  startDate     DateTime @map(name: "start_date")
+  endDate       DateTime @map(name: "end_date")
   category      BatchCategory
   users         User[]
   disposals     Disposal[]
@@ -53,11 +53,11 @@ model Batch {
 model Disposal {
   id              String    @default(cuid()) @id
   category        DisposalCategory @default(REGULAR)
-  batchCategory   BatchCategory
+  batchCategory   BatchCategory @map(name: "batch_category")
   batch           Batch    @relation(fields: [batchId], references: [id])
-  batchId         String
+  batchId         String    @map(name: "batch_id")
   trashCan        TrashCan @relation(fields: [trashCanId], references: [id])
-  trashCanId      String
+  trashCanId      String    @map(name: "trash_can_id")
   createdAt       DateTime  @default(now()) @map(name: "created_at")
   updatedAt       DateTime  @updatedAt @map(name: "updated_at")
   @@map(name: "disposals")
@@ -68,7 +68,7 @@ model User {
   name          String
   email         String    @unique
   batch         Batch?    @relation(fields: [batchId], references: [id])
-  batchId       String?
+  batchId       String?   @map(name: "batch_id")
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @updatedAt @map(name: "updated_at")
   @@map(name: "users")

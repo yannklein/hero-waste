@@ -26,16 +26,20 @@ export const getStaticProps: GetStaticProps = async () => {
     },
   });
 
+  const winner = await prisma.batch.winningBatch();
+  
   return {
-    props: { batches },
+    props: { batches, winner },
   };
 };
 
 type Props = {
+  winner: BatchProps;
   batches: BatchProps[];
 };
 
-const Blog: React.FC<Props> = ({ batches }) => {
+const Blog: React.FC<Props> = ({ batches, winner }) => {
+  
   return (
     <>
       <Header/>
@@ -44,7 +48,7 @@ const Blog: React.FC<Props> = ({ batches }) => {
           <h1>Today's Bat(ch)tle</h1>
           <main className="batches">
             {batches.map(batch => 
-              <div key={batch.id} className="batch">
+              <div key={batch.id} className={`batch ${winner.id === batch.id ? "winner": "loser"}`}>
                 <Batch batch={batch} />
               </div>
             )}
@@ -75,14 +79,13 @@ const Blog: React.FC<Props> = ({ batches }) => {
             display: flex;
             justify-content: space-around;
             position: relative;
+            height: 300px;
           }
-
-          .batch:hover {
-            box-shadow: 1px 1px 3px #aaa;
+          .winner {
+            align-self: flsex-start;
           }
-
-          .batch + .batch {
-            margin-top: 2rem;
+          .loser {
+            align-self: flex-end;
           }
         `}</style>
       </Layout>

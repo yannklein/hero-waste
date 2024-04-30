@@ -17,7 +17,7 @@ export type BatchProps = {
   updatedAt: Date;
 };
 
-const Batch: React.FC<{ batch: BatchProps }> = ({ batch }) => {
+const Batch: React.FC<{ batch: BatchProps }> = ({ batch }) => {  
   return (
     <>
       <div
