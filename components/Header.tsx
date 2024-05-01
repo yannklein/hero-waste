@@ -21,7 +21,7 @@ const Header: React.FC = () => {
             sizes="100vw"
             style={{
               width: '100%',
-              height: '280px',
+              height: '260px',
             }}
             priority={true}
             fetchPriority="auto"

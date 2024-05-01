@@ -80,23 +80,24 @@ const Blog: React.FC<Props> = ({ batches, winner }) => {
         }
         .page {
           flex-grow: 1;
-          text-align: center;
+          align-items: center;
+          justify-content: center;
           display: flex;
           flex-direction: column;
         }
         .page h1 {
           font-size: 43px;
-          margin: 0;
+          margin: 16px 0;
           color: white;
           text-shadow: 4px 4px 5px rgb(0, 0, 0);
         }
         .batches {
+          width: 100%;
           padding: 32px 0;
           display: flex;
           justify-content: space-around;
           align-items: center;
           position: relative;
-          flex-grow: 1;
           padding-bottom: 40px;
           
         }

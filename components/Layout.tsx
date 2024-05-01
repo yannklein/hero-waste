@@ -34,6 +34,7 @@ const Layout: React.FC<Props> = (props) => (
     <style jsx>{`
     .layout {
       height: 100vh;
+      max-height: -webkit-fill-available;
       display: flex;
       flex-direction: column;
     }
