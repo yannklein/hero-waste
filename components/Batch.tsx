@@ -22,7 +22,7 @@ const Batch: React.FC<{ batch: BatchProps }> = ({ batch }) => {
     <>
       <div
         className="frame"
-        onClick={() => Router.push('/batches/[id]', `/batches/${batch.id}`)}
+        // onClick={() => Router.push('/batches/[id]', `/batches/${batch.id}`)}
       >
         <h2>{batch.category}</h2>
         <p className="batch-name">{batch.name} (🧑‍💻{batch.size})</p>
@@ -43,6 +43,7 @@ const Batch: React.FC<{ batch: BatchProps }> = ({ batch }) => {
             font-size: 40px;
             margin: 0;
             text-shadow: 4px 4px 2px #04477A;
+            text-align: center;
           }
           .batch-name {
             margin: 0;

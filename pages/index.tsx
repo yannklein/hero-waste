@@ -1,15 +1,15 @@
 import React from 'react';
 import { GetStaticProps } from 'next';
+import Image from 'next/image';
+import prisma from '../lib/prisma';
+
 import Layout from '../components/Layout';
 import Header from '../components/Header';
 import Batch, { BatchProps } from '../components/Batch';
 
 import { bangers } from '../styles/fonts';
 
-import Image from 'next/image';
 import lightning from '../public/lightning.png';
-
-import prisma from '../lib/prisma';
 
 export const getStaticProps: GetStaticProps = async () => {
   const batches = await prisma.batch.findMany({
