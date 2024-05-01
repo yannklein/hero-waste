@@ -1,5 +1,4 @@
 import React, { ReactNode } from "react";
-import { Inter } from 'next/font/google'
 
 type Props = {
   children: ReactNode;
