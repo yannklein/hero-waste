@@ -1,76 +1,36 @@
 import React from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { GetServerSideProps } from 'next';
 import Layout from '../../components/Layout';
-import prisma from '../../lib/prisma';
 import Header from '../../components/Header';
-import { Disposal, BatchCategory, TrashCategory } from '@prisma/client';
+import { BatchCategory, TrashCategory } from '@prisma/client';
 
-export const getServerSideProps: GetServerSideProps = async ({ query }) => {
-  // http://localhost:3000/disposals/new?trash=glass&batch=web
-  const trashCategory = query?.trash.toString().toUpperCase();
-  const batchCategory = query?.batch.toString().toUpperCase();
 
-  const createDisplosal = async () => {
-    try {
-      const trashCan = await prisma.batch.findFirst({
-        where: {
-          batchCategory: batchCategory,
-          category: trashCategory,
-        },
-      });
-      const activeBatch = await prisma.batch.findFirst({
-        where: {
-          category: batchCategory,
-          startDate: {
-            lte: new Date(),
-          },
-          endDate: {
-            gte: new Date(),
-          },
-        },
-      });
-      const disposal = await prisma.disposal.create({
-        data: {
-          category: trashCategory,
-          batchCategory: batchCategory,
-          batch: activeBatch,
-          trashCan: trashCan,
-        },
-      });
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  return {
-    props: { trashCategory, batchCategory },
-  };
-};
-
-type Props = {
-  trashCategory: String;
-  batchCategory: String;
-};
-
-const NewDisposal: React.FC<Props> = ({ trashCategory, batchCategory }) => {
+const NewDisposal: React.FC = () => {
   const [displayPopup, setDisplayPopup] = React.useState(false);
-
+  
+  const searchParams = useSearchParams();
+  const batchCategory = BatchCategory[searchParams.get('batch')?.toUpperCase()];
+  const trashCategory = TrashCategory[searchParams.get('trash')?.toUpperCase()];
+  
   const handClick = async (category) => {
     try {
-      const searchParams = useSearchParams();
       const data = {
         category: category,
-        batchCategory: BatchCategory[searchParams.get('batch')],
-        trashCategory: TrashCategory[searchParams.get('trash')],
+        batchCategory: batchCategory,
+        trashCategory: trashCategory,
       };
-      await fetch('/disposals', {
+      console.log(data);
+      
+      const response = await fetch('/api/disposals', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
+      const disposal = await response.json()
+      console.log(disposal);
       setDisplayPopup(() => !displayPopup);
+
     } catch (error) {
       console.error(error);
     }
