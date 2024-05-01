@@ -1,4 +1,5 @@
 import React from 'react';
+import Link from 'next/link';
 import { GetServerSideProps } from 'next';
 import Layout from '../../components/Layout';
 import prisma from '../../lib/prisma';
@@ -53,8 +54,13 @@ type Props = {
 
 const NewDisposal: React.FC<Props> = ({trashCategory, batchCategory}) => {
 
+  const [displayPopup, setDisplayPopup] = React.useState(false);
+  
   const handClick = async () => {
-    await setTimeout(() => {}, 1000)
+    await setTimeout(() => {
+      setDisplayPopup(() => !displayPopup);
+    }, 1000);
+    
   }
 
   return (
@@ -69,9 +75,11 @@ const NewDisposal: React.FC<Props> = ({trashCategory, batchCategory}) => {
           Bag changed BUT I found missorted garbage... 🤢
         </a>
       </div>
-      <div className="notification">
+      <div className={`notification ${displayPopup ? "active" : ""}`}>
         <p>Got it! Thanks 😎🤘</p>
-        <a href="#">Dashboard</a>
+        <Link href="/" legacyBehavior>
+          <a href="#">Dashboard</a>
+        </Link>
       </div>
       <style jsx>{`
       .frame {
@@ -82,18 +90,18 @@ const NewDisposal: React.FC<Props> = ({trashCategory, batchCategory}) => {
         gap: 24px;
       }
       .notification.active {
+        display: flex;
         opacity: 1;
       }
       .notification {
+        display: none;
         opacity: 0;
-        transition: opacity 1s;
         backdrop-filter: blur(10px);
         position: fixed;
         left: 50%;
         top: 50%;
         width: 80vw;
         height: 50vh;
-        display: flex;
         flex-direction: column;
         justify-content: center;
         align-items: center;
