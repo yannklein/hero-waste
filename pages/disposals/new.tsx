@@ -1,9 +1,11 @@
 import React from 'react';
 import Link from 'next/link';
+import { useSearchParams } from 'next/navigation';
 import { GetServerSideProps } from 'next';
 import Layout from '../../components/Layout';
 import prisma from '../../lib/prisma';
 import Header from '../../components/Header';
+import { Disposal, BatchCategory, TrashCategory } from '@prisma/client';
 
 export const getServerSideProps: GetServerSideProps = async ({ query }) => {
   // http://localhost:3000/disposals/new?trash=glass&batch=web
@@ -12,23 +14,23 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
 
   const createDisplosal = async () => {
     try {
-      const trashCan = await prisma.batch.findFirst({ 
-        where: { 
+      const trashCan = await prisma.batch.findFirst({
+        where: {
           batchCategory: batchCategory,
-          category: trashCategory
-        }
+          category: trashCategory,
+        },
       });
-      const activeBatch = await prisma.batch.findFirst({ 
-        where: { 
+      const activeBatch = await prisma.batch.findFirst({
+        where: {
           category: batchCategory,
-          startDate: { 
+          startDate: {
             lte: new Date(),
           },
-          endDate: { 
-            gte: new Date()
-          }
-        }
-      })
+          endDate: {
+            gte: new Date(),
+          },
+        },
+      });
       const disposal = await prisma.disposal.create({
         data: {
           category: trashCategory,
@@ -36,12 +38,12 @@ export const getServerSideProps: GetServerSideProps = async ({ query }) => {
           batch: activeBatch,
           trashCan: trashCan,
         },
-      })
+      });
     } catch (error) {
       console.error(error);
     }
-  }
-  
+  };
+
   return {
     props: { trashCategory, batchCategory },
   };
@@ -52,30 +54,43 @@ type Props = {
   batchCategory: String;
 };
 
-const NewDisposal: React.FC<Props> = ({trashCategory, batchCategory}) => {
-
+const NewDisposal: React.FC<Props> = ({ trashCategory, batchCategory }) => {
   const [displayPopup, setDisplayPopup] = React.useState(false);
-  
-  const handClick = async () => {
-    await setTimeout(() => {
+
+  const handClick = async (category) => {
+    try {
+      const searchParams = useSearchParams();
+      const data = {
+        category: category,
+        batchCategory: BatchCategory[searchParams.get('batch')],
+        trashCategory: TrashCategory[searchParams.get('trash')],
+      };
+      await fetch('/disposals', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+      });
       setDisplayPopup(() => !displayPopup);
-    }, 1000);
-    
-  }
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <Layout>
-      <Header/>
+      <Header />
       <div className="frame">
-        <h1>{batchCategory} - {trashCategory} 🗑️ </h1>
-        <a className="button regular" onClick={handClick} data-category="regular" href="#">
+        <h1>
+          {batchCategory} - {trashCategory} 🗑️{' '}
+        </h1>
+        <a className="button regular" onClick={() => handClick('regular')}>
           Bag changed! 😎✅
         </a>
-        <a className="button penalty" onClick={handClick} data-category="penalty" href="#">
+        <a className="button penalty" onClick={() => handClick('penalty')}>
           Bag changed BUT I found missorted garbage... 🤢
         </a>
       </div>
-      <div className={`notification ${displayPopup ? "active" : ""}`}>
+      <div className={`notification ${displayPopup ? 'active' : ''}`}>
         <p>Got it! Thanks 😎🤘</p>
         <Link href="/" legacyBehavior>
           <a href="#">Dashboard</a>
