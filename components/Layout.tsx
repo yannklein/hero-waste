@@ -23,9 +23,6 @@ const Layout: React.FC<Props> = (props) => (
         margin: 0;
         padding: 0;
         font-size: 16px;
-        height: 100vh;
-        display: flex;
-        flex-direction: column;
         
         color: white;
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
@@ -35,10 +32,11 @@ const Layout: React.FC<Props> = (props) => (
       }
     `}</style>
     <style jsx>{`
-      .layout {
-        flex-grow: 1;
-        display: flex;
-      }
+    .layout {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
     `}</style>
   </>
 );

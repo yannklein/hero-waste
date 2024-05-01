@@ -27,7 +27,7 @@ export const getStaticProps: GetStaticProps = async () => {
   });
 
   const winner = await prisma.batch.winningBatch();
-  
+
   return {
     props: { batches, winner },
   };
@@ -39,70 +39,75 @@ type Props = {
 };
 
 const Blog: React.FC<Props> = ({ batches, winner }) => {
-  
   return (
-    <>
-    <div className="frame">
-      <Header/>
-      <Layout>
+    <Layout>
+      <Header />
+      <div className="frame">
         <div className={`page ${bangers.className}`}>
           <h1>Today's Bat(ch)tle</h1>
           <main className="batches">
-            {batches.map(batch => 
-              <div key={batch.id} className={`batch ${winner.id === batch.id ? "winner": "loser"}`}>
+            {batches.map((batch) => (
+              <div
+                key={batch.id}
+                className={`batch ${
+                  winner.id === batch.id ? 'winner' : 'loser'
+                }`}
+              >
                 <Batch batch={batch} />
               </div>
-            )}
+            ))}
             <Image
               className="lightning"
               src={lightning}
               alt="Hero Waste app logo"
-              width='200'
+              width="200"
               style={{
                 position: 'absolute',
                 left: '50%',
                 top: '50%',
-                transform: 'translate(-50%, -50%)'
+                transform: 'translate(-50%, -50%)',
               }}
             />
           </main>
         </div>
-      </Layout>
-    </div>
-    <style jsx>{`
+      </div>
+      <style jsx>{`
         .frame {
-          height: 100vh;
+          flex-grow: 1;
+          height: 100%;
           display: flex;
           flex-direction: column;
         }
-          .page {
-            flex-grow: 1;
-            text-align: center;
-            display: flex;
-            flex-direction: column;
-          }
-          .page h1 {
-            font-size: 43px;
-            margin: 16px 0;
-            color: white;
-            text-shadow: 4px 4px 5px rgb(0, 0, 0);
-          }
-          .batches {
-            display: flex;
-            justify-content: space-around;
-            position: relative;
-            flex-grow: 1;
-            padding-bottom: 40px; 
-            min-height: 300px;
-          }
-          .winner {
-            align-self: flsex-start;
-          }
-          .loser {
-            align-self: flex-end;
-          }
-        `}</style>
-    </>
+        .page {
+          flex-grow: 1;
+          text-align: center;
+          display: flex;
+          flex-direction: column;
+        }
+        .page h1 {
+          font-size: 43px;
+          margin: 0;
+          color: white;
+          text-shadow: 4px 4px 5px rgb(0, 0, 0);
+        }
+        .batches {
+          padding: 32px 0;
+          display: flex;
+          justify-content: space-around;
+          align-items: center;
+          position: relative;
+          flex-grow: 1;
+          padding-bottom: 40px;
+          
+        }
+        .winner {
+          transform: translateY(20px)
+        }
+        .loser {
+          transform: translateY(-20px)
+        }
+      `}</style>
+    </Layout>
   );
 };
 
