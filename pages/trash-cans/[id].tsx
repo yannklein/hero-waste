@@ -16,14 +16,14 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
       id: String(params?.id),
     },
   });
-
+  
   return {
     props: trashCan,
   };
 };
 
-const TrashCan: React.FC<TrashCanProps> = (props) => {
-  const url = `http://localhost:3000/disposals/new?trash=${props.category}&batch=${props.batchCategory}`;
+const TrashCan: React.FC<TrashCanProps> = (props) => {  
+  const url = `${process.env.NEXT_PUBLIC_VERCEL_URL}disposals/new?trash=${props.category}&batch=${props.batchCategory}`;
   return (
     <div className={`frame ${bangers.className}`}>
       <div className="info">🗑️ {props.batchCategory}</div>
