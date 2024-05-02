@@ -18,18 +18,24 @@ const TrashCan: React.FC<{ trashCan: TrashCanProps }> = ({ trashCan }) => {
     <>
       <div
         className="frame">
-        <h2>{trashCan.batchCategory} - {trashCan.category}</h2>
-        <p className="capacity">Capacity: {trashCan.capacity}</p>
+        <h2>
+          <div>🗑️ {trashCan.batchCategory}</div>
+          <div>{trashCan.category}</div>
+        </h2>
+        <p className="capacity">{trashCan.capacity}L</p>
         <p className="info"> QR code</p>
       </div>
       <style jsx>{`
         .frame {
+          display: flex;
+          align-items: center;
+          gap: 16px;
           box-shadow: 4px 4px 5px rgb(0, 0, 0);
-          border-radius: 50px;
+          border-radius: 10px;
           background: #081834;
-          padding: 16px;
+          padding: 8px;
+          margin-bottom: 24px;
           h2 {
-            font-size: 40px;
             margin: 0;
             text-shadow: 4px 4px 2px #04477A;
             text-align: center;
