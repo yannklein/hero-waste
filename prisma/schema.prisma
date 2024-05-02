@@ -30,7 +30,7 @@ model TrashCan {
   capacity        Int
   category        TrashCategory
   batchCategory   BatchCategory @map(name: "batch_category")
-  disposal        Disposal[]
+  disposals        Disposal[]
   createdAt       DateTime  @default(now()) @map(name: "created_at")
   updatedAt       DateTime  @updatedAt @map(name: "updated_at")
   @@map(name: "trash_cans")

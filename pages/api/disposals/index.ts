@@ -13,6 +13,9 @@ export default async function handle(req, res) {
         batchCategory: BatchCategory[batchCategory],
         category: TrashCategory[trashCategory],
       },
+      orderBy: {
+        batchCategory: 'asc',
+      }
     });
     const activeBatch = await prisma.batch.findFirst({
       select: {

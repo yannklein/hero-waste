@@ -3,6 +3,9 @@ import Router from 'next/router';
 import ReactMarkdown from 'react-markdown';
 import { TrashCategory, BatchCategory, Disposal } from '@prisma/client';
 
+import {QRCodeSVG} from 'qrcode.react';
+
+
 export type TrashCanProps = {
   id: string;
   capacity: Number;
@@ -14,6 +17,8 @@ export type TrashCanProps = {
 };
 
 const TrashCan: React.FC<{ trashCan: TrashCanProps }> = ({ trashCan }) => {  
+  const url = `http://localhost:3000/disposals/new?trash=${trashCan.category}&batch=${trashCan.batchCategory}`;
+
   return (
     <>
       <div
@@ -22,18 +27,22 @@ const TrashCan: React.FC<{ trashCan: TrashCanProps }> = ({ trashCan }) => {
           <div>🗑️ {trashCan.batchCategory}</div>
           <div>{trashCan.category}</div>
         </h2>
-        <p className="capacity">{trashCan.capacity}L</p>
-        <p className="info"> QR code</p>
+        <div>
+          <p className="info">{trashCan.capacity}L</p>
+          <p className="info">{trashCan.disposals?.length} disposals</p>
+        </div>
+        <p className="info"><QRCodeSVG value={url} /></p>
       </div>
       <style jsx>{`
         .frame {
           display: flex;
           align-items: center;
+          justify-content: space-between;
           gap: 16px;
           box-shadow: 4px 4px 5px rgb(0, 0, 0);
           border-radius: 10px;
           background: #081834;
-          padding: 8px;
+          padding: 8px 16px;
           margin-bottom: 24px;
           h2 {
             margin: 0;
@@ -43,19 +52,11 @@ const TrashCan: React.FC<{ trashCan: TrashCanProps }> = ({ trashCan }) => {
           .trashCan-name {
             margin: 0;
           }
-          .capacity {
+          .info {
+            font-size: 24px;
+            margin: 0;
             display: flex;
             align-items: center;
-            margin: 16px 0;
-            font-size: 24px;
-            span {
-              font-size: 40px;
-              margin: 0 4px;
-              color: #FFF6B0;
-            }
-          }
-          .info {
-            margin: 0;
           }
         }
       `}</style>

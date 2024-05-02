@@ -6,7 +6,13 @@ import TrashCan, { TrashCanProps } from "../../components/TrashCan";
 import Link from "next/link";
 
 export const getServerSideProps: GetServerSideProps = async () => {
-  const trashCans = await prisma.trashCan.findMany();
+  const trashCans = await prisma.trashCan.findMany({
+    include: {
+      disposals: true
+    }
+  });
+  console.log(trashCans);
+  
 
   return {
     props: { trashCans },
