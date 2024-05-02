@@ -7,8 +7,6 @@ import Layout from '../components/Layout';
 import Header from '../components/Header';
 import Batch, { BatchProps } from '../components/Batch';
 
-import { bangers } from '../styles/fonts';
-
 import lightning from '../public/lightning.png';
 
 export const getStaticProps: GetStaticProps = async () => {
@@ -43,7 +41,7 @@ const Blog: React.FC<Props> = ({ batches, winner }) => {
     <Layout>
       <Header />
       <div className="frame">
-        <div className={`page ${bangers.className}`}>
+        <div className="page">
           <h1>Today's Bat(ch)tle</h1>
           <main className="batches">
             {batches.map((batch) => (

@@ -1,4 +1,5 @@
 import React, { ReactNode } from "react";
+import { bangers } from '../styles/fonts';
 
 type Props = {
   children: ReactNode;
@@ -6,7 +7,7 @@ type Props = {
 
 const Layout: React.FC<Props> = (props) => (
   <>
-    <div className="layout">{props.children}</div>
+    <div className={`layout ${bangers.className}`}>{props.children}</div>
     <style jsx global>{`
       html {
         box-sizing: border-box;
