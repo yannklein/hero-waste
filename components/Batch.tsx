@@ -1,6 +1,5 @@
 import React from 'react';
-import Router from 'next/router';
-import ReactMarkdown from 'react-markdown';
+// import Router from 'next/router';
 import { BatchCategory, Disposal } from '@prisma/client';
 
 export type BatchProps = {

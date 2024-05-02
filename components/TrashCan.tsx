@@ -1,6 +1,5 @@
 import React from 'react';
 import Router from 'next/router';
-import ReactMarkdown from 'react-markdown';
 import { TrashCategory, BatchCategory, Disposal } from '@prisma/client';
 
 import {QRCodeSVG} from 'qrcode.react';
@@ -31,7 +30,12 @@ const TrashCan: React.FC<{ trashCan: TrashCanProps }> = ({ trashCan }) => {
           <p className="info">{trashCan.capacity}L</p>
           <p className="info">{trashCan.disposals?.length} disposals</p>
         </div>
-        <p className="info"><QRCodeSVG value={url} /></p>
+        <div 
+          className="info" 
+          onClick={() => Router.push('/trash-cans/[id]', `/trash-cans/${trashCan.id}`)}  
+        >
+          <QRCodeSVG value={url} />
+        </div>
       </div>
       <style jsx>{`
         .frame {
