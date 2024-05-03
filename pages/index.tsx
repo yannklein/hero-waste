@@ -8,6 +8,7 @@ import Header from '../components/Header';
 import Batch, { BatchProps } from '../components/Batch';
 
 import lightning from '../public/lightning.png';
+import { DisposalCategory } from '@prisma/client';
 
 export const getStaticProps: GetStaticProps = async () => {
   const batches = await prisma.batch.findMany({
@@ -23,6 +24,14 @@ export const getStaticProps: GetStaticProps = async () => {
       },
     },
   });
+  for (let batch of batches) {
+    batch.penaltyCount = await prisma.disposal.count({ where: { category: DisposalCategory['PENALTY']}});
+    batch.lastWeekDisposals = await prisma.batch.prevWeekDisposal(batch, 1);
+    const twoWeeksAgoDisp = await prisma.batch.prevWeekDisposal(batch, 2);
+    batch.trend = batch.lastWeekDisposals - twoWeeksAgoDisp
+    console.log(batch, twoWeeksAgoDisp);
+    
+  }
 
   const winner = await prisma.batch.winningBatch();
 

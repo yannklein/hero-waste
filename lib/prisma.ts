@@ -1,4 +1,4 @@
-import { Disposal, Prisma, PrismaClient } from '@prisma/client';
+import { Batch, Disposal, DisposalCategory, Prisma, PrismaClient } from '@prisma/client';
 import { add } from 'date-fns';
 
 let prisma;
@@ -59,8 +59,11 @@ prisma = new PrismaClient().$extends({
           const currentLength =
             (new Date().getTime() - batch.startDate.getTime()) / (24 * 60000);
 
+          const regularCount = batch.disposals.filter(d => d.category === DisposalCategory['REGULAR']).length;
+          const penaltyCount = batch.disposals.length - regularCount;
+
           return Math.round(
-            (currentLength * 100) / totalLength - batch.disposals.length * 1,
+            (currentLength * 100) / totalLength - (regularCount * 0.3) - penaltyCount,
           );
         },
       },
@@ -68,6 +71,16 @@ prisma = new PrismaClient().$extends({
   }}).$extends({
   model: {
     batch: {
+      async prevWeekDisposal(batch: Batch, weekAgo = 1) {
+        return await prisma.disposal.count({
+          where: {
+            createdAt: {
+              gte: add(new Date(), { weeks: -weekAgo }),
+              lte: add(new Date(), { weeks: (1 - weekAgo) }),
+            }
+          }
+        })
+      },
       async winningBatch() {
         const result = await prisma.$queryRawUnsafe(`
         with batch_info as (

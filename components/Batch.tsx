@@ -1,13 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import { GetStaticProps } from 'next';
 // import Router from 'next/router';
 import { BatchCategory, Disposal, DisposalCategory } from '@prisma/client';
+import prisma from '../lib/prisma';
 
 export type BatchProps = {
   id: string;
   name: string;
   size: Number;
   score: Number;
+  trend: Number;
   lastWeekDisposals: Number;
+  penaltyCount: Number;
   disposals: Disposal[];
   startDate: Date;
   endDate: Date;
@@ -17,7 +21,14 @@ export type BatchProps = {
 };
 
 const Batch: React.FC<{ batch: BatchProps }> = ({ batch }) => {  
-  const penaltyCount = batch.disposals.filter( d => d.category === DisposalCategory['PENALTY']).length
+
+  let trendIcon = "🟰";
+  if (batch.trend > new Number(0)) {
+    trendIcon = "🔺"
+  } else if (batch.trend < new Number(0)) {
+    trendIcon = "🔽"
+  }
+  
   return (
     <>
       <div
@@ -31,8 +42,8 @@ const Batch: React.FC<{ batch: BatchProps }> = ({ batch }) => {
 
         <div>
           <p className="score">🏆 <span>{batch.score}</span> / 100</p>
-          <p className="info">🚮 {batch.disposals.length} ({batch.lastWeekDisposals} this week 🔻)</p>
-          <p className="info">🤢 {penaltyCount} penalties</p>
+          <p className="info">🚮 {batch.disposals.length} ({batch.lastWeekDisposals} this week {trendIcon})</p>
+          <p className="info">🤢 {batch.penaltyCount} penalties</p>
         </div>
       </div>
       <style jsx>{`
