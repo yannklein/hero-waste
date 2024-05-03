@@ -1,6 +1,6 @@
 import React from 'react';
 // import Router from 'next/router';
-import { BatchCategory, Disposal } from '@prisma/client';
+import { BatchCategory, Disposal, DisposalCategory } from '@prisma/client';
 
 export type BatchProps = {
   id: string;
@@ -17,6 +17,7 @@ export type BatchProps = {
 };
 
 const Batch: React.FC<{ batch: BatchProps }> = ({ batch }) => {  
+  const penaltyCount = batch.disposals.filter( d => d.category === DisposalCategory['PENALTY']).length
   return (
     <>
       <div
@@ -31,7 +32,7 @@ const Batch: React.FC<{ batch: BatchProps }> = ({ batch }) => {
         <div>
           <p className="score">🏆 <span>{batch.score}</span> / 100</p>
           <p className="info">🚮 {batch.disposals.length} ({batch.lastWeekDisposals} this week 🔻)</p>
-          <p className="info">🤢 3 penalties</p>
+          <p className="info">🤢 {penaltyCount} penalties</p>
         </div>
       </div>
       <style jsx>{`
