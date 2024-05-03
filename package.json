@@ -8,6 +8,9 @@
     "build": "next build",
     "start": "next start"
   },
+  "prisma": {
+    "seed": "ts-node --compiler-options {\"module\":\"CommonJS\"} prisma/seed.ts"
+  },
   "keywords": [],
   "author": "",
   "license": "MIT",
@@ -22,9 +25,10 @@
     "react-markdown": "8.0.0"
   },
   "devDependencies": {
-    "@types/node": "17.0.14",
+    "@types/node": "^17.0.14",
     "@types/react": "17.0.38",
     "prisma": "^5.13.0",
+    "ts-node": "^10.9.2",
     "typescript": "^5.4.5"
   }
 }
