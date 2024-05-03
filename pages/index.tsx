@@ -36,7 +36,7 @@ type Props = {
   batches: BatchProps[];
 };
 
-const Blog: React.FC<Props> = ({ batches, winner }) => {
+const Dashboard: React.FC<Props> = ({ batches, winner }) => {
   return (
     <Layout>
       <Header />
@@ -110,4 +110,4 @@ const Blog: React.FC<Props> = ({ batches, winner }) => {
   );
 };
 
-export default Blog;
+export default Dashboard;
