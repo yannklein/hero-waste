@@ -25,7 +25,7 @@ const Header: React.FC = () => {
       </Link>
       <div className="menu">
         <Link href="https://www.lewagon.com/tokyo">About Le Wagon</Link>
-        <Link href="/trashes">Trash cans</Link>
+        <Link href="/trash-cans">Trash cans</Link>
         <Link href="/">Login</Link>
       </div>
       <style jsx>{`

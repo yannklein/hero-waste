@@ -47,6 +47,7 @@ const TrashCan: React.FC<{ trashCan: TrashCanProps }> = ({ trashCan }) => {
           background: #081834;
           padding: 8px 16px;
           margin-bottom: 24px;
+          max-height: 160px;
           h2 {
             margin: 0;
             text-shadow: 4px 4px 2px #04477A;

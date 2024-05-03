@@ -46,8 +46,9 @@ const TrashCans: React.FC<Props> = ({trashCans}) => {
         }
 
         .trash-cans {
+          display: grid;
+          grid-template-columns: 1fr;
           flex-grow: 1;
-          width: 100%;
         }
 
         h1 {
@@ -66,6 +67,20 @@ const TrashCans: React.FC<Props> = ({trashCans}) => {
           padding: 16px 32px;
           width: fit-content;
           margin-top: 16px;
+        }
+        @media (min-width: 900px) {
+          .page {
+            padding: 24px;
+          }
+          .trash-cans {
+            gap: 24px;
+            grid-template-columns: 1fr 1fr;
+          }
+        }
+        @media (min-width: 1200px) {
+          .trash-cans {
+            grid-template-columns: 1fr 1fr 1fr;
+          }
         }
       `}</style>
     </Layout>
