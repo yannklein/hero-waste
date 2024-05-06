@@ -10,9 +10,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
     include: {
       disposals: true
     }
-  });
-  console.log(trashCans);
-  
+  });  
 
   return {
     props: { trashCans },

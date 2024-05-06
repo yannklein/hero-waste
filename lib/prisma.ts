@@ -13,6 +13,7 @@ type BatchExtended = {
   endDate?: Date;
   disposals?: Disposal[];
   score?: Number;
+  size?: Number;
 };
 
 prisma = new PrismaClient().$extends({
@@ -62,8 +63,12 @@ prisma = new PrismaClient().$extends({
           const regularCount = batch.disposals.filter(d => d.category === DisposalCategory['REGULAR']).length;
           const penaltyCount = batch.disposals.length - regularCount;
 
+          const progress = currentLength * 100 / totalLength;
+          const totalPenalty = regularCount * 0.3 + penaltyCount;
+          // console.log("score data", progress, totalPenalty, batch.size);
+          
           return Math.round(
-            (currentLength * 100) / totalLength - (regularCount * 0.3) - penaltyCount,
+            progress - (totalPenalty * (100 / Number(batch.size)))
           );
         },
       },

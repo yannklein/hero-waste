@@ -31,7 +31,6 @@ export const getStaticProps: GetStaticProps = async () => {
     batch.lastWeekDisposals = await prisma.batch.prevWeekDisposal(batch, 1);
     const twoWeeksAgoDisp = await prisma.batch.prevWeekDisposal(batch, 2);
     batch.trend = batch.lastWeekDisposals - twoWeeksAgoDisp
-    console.log(batch, twoWeeksAgoDisp);
   }
 
   const winner = await prisma.batch.winningBatch();

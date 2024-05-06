@@ -20,7 +20,6 @@ const NewDisposal: React.FC = () => {
         batchCategory: batchCategory,
         trashCategory: trashCategory,
       };
-      console.log(data);
       
       const response = await fetch('/api/disposals', {
         method: 'POST',
@@ -28,7 +27,6 @@ const NewDisposal: React.FC = () => {
         body: JSON.stringify(data),
       });
       const disposal = await response.json()
-      console.log(disposal);
       setDisplayPopup(() => !displayPopup);
 
     } catch (error) {
