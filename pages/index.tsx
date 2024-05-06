@@ -25,7 +25,9 @@ export const getStaticProps: GetStaticProps = async () => {
     },
   });
   for (let batch of batches) {
-    batch.penaltyCount = await prisma.disposal.count({ where: { category: DisposalCategory['PENALTY']}});
+    batch.penaltyCount = await prisma.disposal.count({ 
+      where: { category: DisposalCategory['PENALTY'], batchId: batch.id}
+    });
     batch.lastWeekDisposals = await prisma.batch.prevWeekDisposal(batch, 1);
     const twoWeeksAgoDisp = await prisma.batch.prevWeekDisposal(batch, 2);
     batch.trend = batch.lastWeekDisposals - twoWeeksAgoDisp

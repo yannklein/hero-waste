@@ -74,6 +74,7 @@ prisma = new PrismaClient().$extends({
       async prevWeekDisposal(batch: Batch, weekAgo = 1) {
         return await prisma.disposal.count({
           where: {
+            batchId: batch.id,
             createdAt: {
               gte: add(new Date(), { weeks: -weekAgo }),
               lte: add(new Date(), { weeks: (1 - weekAgo) }),
