@@ -53,14 +53,14 @@ const Dashboard: React.FC<Props> = ({ batches, winner }) => {
         <div className="page">
           <h1>Today's Bat(ch)tle</h1>
           <main className="batches">
-            {batches.map((batch) => (
+            {batches.map((batch, index) => (
               <div
                 key={batch.id}
                 className={`batch ${
                   winner.id === batch.id ? 'winner' : 'loser'
                 }`}
               >
-                <Batch batch={batch} />
+                <Batch batch={batch} position={index === 0 ? 'left': 'right'} />
               </div>
             ))}
             <Image
