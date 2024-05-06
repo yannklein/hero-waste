@@ -107,12 +107,34 @@ const Batch: React.FC<{ batch: BatchProps, position: String }> = ({ batch, posit
             width: 200px;
           }
         }
-        @media (min-width: 1000px) {
+        @media (min-width: 700px) {
+          .frame {
+            width: 300px;
+          }
+        }
+        @media (min-width: 900px) {
           .frame {
             flex-direction: row;
             justify-content: space-around;
             width: 400px;
             height: 240px;
+          }
+        }
+        @media (min-width: 1000px) {
+          .frame {
+            flex-direction: column;
+            justify-content: space-around;
+            width: 500px;
+            height: 400px;
+            h2 {
+              font-size: 64px;
+            }
+            .score {
+              font-size: 56px;
+              span {
+                font-size: 64px;
+              }
+            }
           }
         }
       `}</style>

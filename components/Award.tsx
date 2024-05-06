@@ -48,7 +48,8 @@ const Award: React.FC<Props> = (props) => {
           top: 1px;
           left: 0;
         }
-      }`}</style>
+      }
+      `}</style>
     </div>
   );
 };

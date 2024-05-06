@@ -67,8 +67,9 @@ const Dashboard: React.FC<Props> = ({ batches, winner }) => {
               className="lightning"
               src={lightning}
               alt="Hero Waste app logo"
-              width="200"
               style={{
+                width: '30%',
+                height: 'auto',
                 position: 'absolute',
                 left: '50%',
                 top: '50%',
