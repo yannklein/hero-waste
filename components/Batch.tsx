@@ -11,8 +11,10 @@ export type BatchProps = {
   size: Number;
   score: Number;
   trend: Number;
-  lastWeekDisposals: Number;
+  lastWeekDisposals: number;
   penaltyCount: Number;
+  isNoPenalty: Boolean;
+  isSorter: Boolean;
   disposals: Disposal[];
   startDate: Date;
   endDate: Date;
@@ -29,7 +31,17 @@ const Batch: React.FC<{ batch: BatchProps, position: String }> = ({ batch, posit
   } else if (batch.trend < new Number(0)) {
     trendIcon = "🔽"
   }
-  
+  let awards = [];
+  if (batch.isNoPenalty) {
+    awards.push(<Award category={AwardCategory['NO_PENALTY']}/>)
+  }
+  if (batch.isSorter) {
+    awards.push(<Award category={AwardCategory['SORTER']}/>)
+  }
+  if (batch.lastWeekDisposals < 4) {
+    awards.push(<Award category={AwardCategory['ZERO_WASTE']}/>)
+  }
+
   return (
     <>
       <div
@@ -47,9 +59,7 @@ const Batch: React.FC<{ batch: BatchProps, position: String }> = ({ batch, posit
           <p className="info">🤢 {batch.penaltyCount} penalties</p>
         </div>
         <div className={`awards ${position}`}>
-          <Award category={AwardCategory['NO_PENALTY']}/>
-          <Award category={AwardCategory['SORTER']}/>
-          <Award category={AwardCategory['ZERO_WASTE']}/>
+          {awards}
         </div>
       </div>
       <style jsx>{`

@@ -30,7 +30,11 @@ export const getStaticProps: GetStaticProps = async () => {
     });
     batch.lastWeekDisposals = await prisma.batch.prevWeekDisposal(batch, 1);
     const twoWeeksAgoDisp = await prisma.batch.prevWeekDisposal(batch, 2);
-    batch.trend = batch.lastWeekDisposals - twoWeeksAgoDisp
+    const penaltyCount = await prisma.batch.prevWeekPenalties(batch);
+    const sortingRate = await prisma.batch.sortingRate(batch);
+    batch.trend = batch.lastWeekDisposals - twoWeeksAgoDisp;
+    batch.isNoPenalty = penaltyCount === 0;
+    batch.isSorter = sortingRate > 0.5;
   }
 
   const winner = await prisma.batch.winningBatch();

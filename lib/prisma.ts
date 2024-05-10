@@ -1,5 +1,13 @@
-import { Batch, Disposal, DisposalCategory, Prisma, PrismaClient } from '@prisma/client';
+import {
+  Batch,
+  Disposal,
+  DisposalCategory,
+  Prisma,
+  PrismaClient,
+  TrashCategory,
+} from '@prisma/client';
 import { add } from 'date-fns';
+import TrashCan from '../components/TrashCan';
 
 let prisma;
 
@@ -16,79 +24,121 @@ type BatchExtended = {
   size?: Number;
 };
 
-prisma = new PrismaClient().$extends({
-  result: {
-    batch: {
-      lastWeekDisposals: {
-        // include: {
-        //   disposals: {
-        //     where: {
-        //       createdAt: {
-        //         gte: add(new Date(), { weeks: -1 }),
-        //         lte: new Date(),
-        //       },
-        //     }
-        //   }
-        // },
-        // compute(batch: BatchExtended) {
-        //   return batch.disposals.length
-        // },
-        include: {
-          disposals: true,
+prisma = new PrismaClient()
+  .$extends({
+    result: {
+      batch: {
+        lastWeekDisposals: {
+          // include: {
+          //   disposals: {
+          //     where: {
+          //       createdAt: {
+          //         gte: add(new Date(), { weeks: -1 }),
+          //         lte: new Date(),
+          //       },
+          //     }
+          //   }
+          // },
+          // compute(batch: BatchExtended) {
+          //   return batch.disposals.length
+          // },
+          include: {
+            disposals: true,
+          },
+          compute(batch: BatchExtended) {
+            return batch.disposals.filter(
+              (disp) =>
+                disp.createdAt >= add(new Date(), { weeks: -1 }) &&
+                disp.createdAt < new Date(),
+            ).length;
+          },
         },
-        compute(batch: BatchExtended) {
-          return batch.disposals.filter(
-            (disp) =>
-              disp.createdAt >= add(new Date(), { weeks: -1 }) &&
-              disp.createdAt < new Date(),
-          ).length;
-        },
-      },
-      score: {
-        needs: {
-          id: true,
-          startDate: true,
-          endDate: true,
-        },
-        include: {
-          disposals: true,
-        },
-        compute(batch: BatchExtended) {
-          const totalLength =
-            (batch.endDate.getTime() - batch.startDate.getTime()) /
-            (24 * 60000);
-          const currentLength =
-            (new Date().getTime() - batch.startDate.getTime()) / (24 * 60000);
+        score: {
+          needs: {
+            id: true,
+            startDate: true,
+            endDate: true,
+          },
+          include: {
+            disposals: true,
+          },
+          compute(batch: BatchExtended) {
+            const totalLength =
+              (batch.endDate.getTime() - batch.startDate.getTime()) /
+              (24 * 60000);
+            const currentLength =
+              (new Date().getTime() - batch.startDate.getTime()) / (24 * 60000);
 
-          const regularCount = batch.disposals.filter(d => d.category === DisposalCategory['REGULAR']).length;
-          const penaltyCount = batch.disposals.length - regularCount;
+            const regularCount = batch.disposals.filter(
+              (d) => d.category === DisposalCategory['REGULAR'],
+            ).length;
+            const penaltyCount = batch.disposals.length - regularCount;
 
-          const progress = currentLength * 100 / totalLength;
-          const totalPenalty = regularCount * 0.3 + penaltyCount;
-          // console.log("score data", progress, totalPenalty, batch.size);
-          
-          return Math.round(
-            progress - (totalPenalty * (100 / Number(batch.size)))
-          );
+            const progress = (currentLength * 100) / totalLength;
+            const totalPenalty = regularCount * 0.3 + penaltyCount;
+            // console.log("score data", progress, totalPenalty, batch.size);
+
+            return Math.round(
+              progress - totalPenalty * (100 / Number(batch.size)),
+            );
+          },
         },
       },
     },
-  }}).$extends({
-  model: {
-    batch: {
-      async prevWeekDisposal(batch: Batch, weekAgo = 1) {
-        return await prisma.disposal.count({
-          where: {
-            batchId: batch.id,
-            createdAt: {
-              gte: add(new Date(), { weeks: -weekAgo }),
-              lte: add(new Date(), { weeks: (1 - weekAgo) }),
-            }
+  })
+  .$extends({
+    model: {
+      batch: {
+        async sortingRate(batch: Batch, weekAgo = 1) {
+          const amountDisposals = await prisma.disposal.count({
+            where: {
+              batchId: batch.id,
+              createdAt: {
+                gte: add(new Date(), { weeks: -weekAgo }),
+                lte: add(new Date(), { weeks: 1 - weekAgo }),
+              },
+            },
+          });
+          const burnableCount = await prisma.disposal.count({
+            where: {
+              trashCan: { is: { category: TrashCategory['BURNABLE'] } },
+              batchId: batch.id,
+              createdAt: {
+                gte: add(new Date(), { weeks: -weekAgo }),
+                lte: add(new Date(), { weeks: 1 - weekAgo }),
+              },
+            },
+          });
+          if (amountDisposals) {
+            return 1;
           }
-        })
-      },
-      async winningBatch() {
-        const result = await prisma.$queryRawUnsafe(`
+          return 1 - burnableCount / amountDisposals;
+        },
+        async prevWeekPenalties(batch: Batch, weekAgo = 1) {
+          return await prisma.disposal.count({
+            where: {
+              category: DisposalCategory['PENALTY'],
+              batchId: batch.id,
+              createdAt: {
+                gte: add(new Date(), { weeks: -weekAgo }),
+                lte: add(new Date(), { weeks: 1 - weekAgo }),
+              },
+            },
+          });
+        },
+        async prevWeekDisposal(batch: Batch, weekAgo = 1) {
+          return await prisma.disposal.count({
+            where: {
+              batchId: batch.id,
+              createdAt: {
+                gte: add(new Date(), { weeks: -weekAgo }),
+                lte: add(new Date(), { weeks: 1 - weekAgo }),
+              },
+            },
+          });
+        },
+        async winningBatch() {
+          const result = await prisma.$queryRawUnsafe(`
         with batch_info as (
           SELECT 
             EXTRACT(DAY from (b.end_date - b.start_date)) AS total_days,
@@ -115,11 +165,11 @@ prisma = new PrismaClient().$extends({
           order by s.score
           limit 1
         `);
-  
-        return result[0];
+
+          return result[0];
+        },
       },
     },
-  },
-});
+  });
 
 export default prisma;
