@@ -42,6 +42,7 @@ const Award: React.FC<Props> = (props) => {
         height: 24px;
         svg {
           color: goldenrod;
+          position: absolute;
         }
         img {
           position: absolute;
