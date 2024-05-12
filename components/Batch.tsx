@@ -78,7 +78,7 @@ const Batch: React.FC<{ batch: BatchProps, position: String }> = ({ batch, posit
             height: 100%;
             display: flex;
             flex-direction: column;
-            gap: 4px;
+            gap: 16px;
             padding: 32px 0;
             font-size: 32px;
           }
@@ -120,6 +120,12 @@ const Batch: React.FC<{ batch: BatchProps, position: String }> = ({ batch, posit
         @media (min-width: 700px) {
           .frame {
             width: 300px;
+            .awards.left {
+              left: -15px;
+            }
+            .awards.right {
+              right: -15px;
+            }
           }
         }
         @media (min-width: 900px) {
@@ -128,6 +134,15 @@ const Batch: React.FC<{ batch: BatchProps, position: String }> = ({ batch, posit
             justify-content: space-around;
             width: 400px;
             height: 240px;
+            .awards {
+              gap: 32px;
+            }
+            .awards.left {
+              left: -20px;
+            }
+            .awards.right {
+              right: -20px;
+            }
           }
         }
         @media (min-width: 1000px) {

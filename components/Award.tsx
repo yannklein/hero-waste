@@ -32,14 +32,14 @@ const Award: React.FC<Props> = (props) => {
         className="award"
         src={awardIcons[AwardCategory[props.category]]}
         alt={`${AwardCategory[props.category]} award icon`}
-        style={{
-          width: '24px',
-          height: '24px',
-        }}
+        layout='fill'
+        objectFit='cover'
       />
       <style jsx>{`
       .frame {
         position: relative;
+        width: 24px;
+        height: 24px;
         svg {
           color: goldenrod;
         }
@@ -47,6 +47,20 @@ const Award: React.FC<Props> = (props) => {
           position: absolute;
           top: 1px;
           left: 0;
+        }
+      }
+      @media (min-width: 700px) {
+        .frame {
+          width: 32px;
+          height: 32px;
+          font-size: 40px;
+        }
+      }
+      @media (min-width: 900px) {
+        .frame {
+          width: 64px;
+          height: 64px;
+          font-size: 84px;
         }
       }
       `}</style>
