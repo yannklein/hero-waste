@@ -15,7 +15,7 @@ export default function Tooltip({ message, position, children }) {
               position: absolute;
               top: 24px;
               display: none;
-              background-color: darkgray;
+              background-color: lightgray;
               color: black;
               padding: 8px;
               z-index: 3;
@@ -23,10 +23,17 @@ export default function Tooltip({ message, position, children }) {
               border-radius: 4px;
               min-width: 170px;
               width: 25vw;
+              box-shadow: 0px 0px 16px rgba(0,0,0,0.7);
             }
           }
           .tooltip:hover .message {
             display: block;
+            }
+          }
+          @media (min-width: 900px) {
+            .tooltip .message {
+                top: 80px;
+              }
             }
           }
         `}
