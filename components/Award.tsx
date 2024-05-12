@@ -7,6 +7,7 @@ import Image from 'next/image';
 import no_penalty from '../public/no_penalty2.png';
 import sorter from '../public/sorter2.png';
 import zero_waste from '../public/zero_waste2.png';
+import Tooltip from './Tooltip';
 
 export enum AwardCategory {
   NO_PENALTY,
@@ -22,10 +23,13 @@ const awardIcons = {
 
 type Props = {
   category: AwardCategory;
+  tooltipMessage : String;
+  position: String;
 };
 
 const Award: React.FC<Props> = (props) => {
   return (
+    <Tooltip position={props.position} message={props.tooltipMessage}>
     <div className="frame">
       <FontAwesomeIcon icon={faAward} />
       <Image
@@ -66,6 +70,7 @@ const Award: React.FC<Props> = (props) => {
       }
       `}</style>
     </div>
+    </Tooltip>
   );
 };
 

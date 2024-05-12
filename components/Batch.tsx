@@ -23,23 +23,27 @@ export type BatchProps = {
   updatedAt: Date;
 };
 
-const Batch: React.FC<{ batch: BatchProps, position: String }> = ({ batch, position }) => {  
-
-  let trendIcon = "🟰";
+const Batch: React.FC<{ batch: BatchProps; position: String }> = ({
+  batch,
+  position,
+}) => {
+  let trendIcon = '🟰';
   if (batch.trend > new Number(0)) {
-    trendIcon = "🔺"
+    trendIcon = '🔺';
   } else if (batch.trend < new Number(0)) {
-    trendIcon = "🔽"
+    trendIcon = '🔽';
   }
   let awards = [];
   if (batch.isNoPenalty) {
-    awards.push(<Award category={AwardCategory['NO_PENALTY']}/>)
+    awards.push(
+        <Award position={position} category={AwardCategory['NO_PENALTY']} tooltipMessage="Wow! No trash mix-up this week, good job 💪" />
+    );
   }
   if (batch.isSorter) {
-    awards.push(<Award category={AwardCategory['SORTER']}/>)
+    awards.push(<Award position={position} category={AwardCategory['SORTER']} tooltipMessage="Burnable are at a record low this week, you're killing it 😎" />);
   }
   if (batch.lastWeekDisposals < 4) {
-    awards.push(<Award category={AwardCategory['ZERO_WASTE']}/>)
+    awards.push(<Award position={position} category={AwardCategory['ZERO_WASTE']} tooltipMessage="Less than 4 waste bag this week! You're legend 🦄" />);
   }
 
   return (
@@ -50,17 +54,22 @@ const Batch: React.FC<{ batch: BatchProps, position: String }> = ({ batch, posit
       >
         <div>
           <h2>{batch.category}</h2>
-          <p className="batch-name">{batch.name} (🧑‍💻{batch.size})</p>
+          <p className="batch-name">
+            {batch.name} (🧑‍💻{batch.size})
+          </p>
         </div>
 
         <div>
-          <p className="score">🏆 <span>{batch.score}</span> / 100</p>
-          <p className="info">🚮 {batch.disposals.length} ({batch.lastWeekDisposals} this week {trendIcon})</p>
+          <p className="score">
+            🏆 <span>{batch.score}</span> / 100
+          </p>
+          <p className="info">
+            🚮 {batch.disposals.length} ({batch.lastWeekDisposals} this week{' '}
+            {trendIcon})
+          </p>
           <p className="info">🤢 {batch.penaltyCount} penalties</p>
         </div>
-        <div className={`awards ${position}`}>
-          {awards}
-        </div>
+        <div className={`awards ${position}`}>{awards}</div>
       </div>
       <style jsx>{`
         .frame {
@@ -91,7 +100,7 @@ const Batch: React.FC<{ batch: BatchProps, position: String }> = ({ batch, posit
           h2 {
             font-size: 40px;
             margin: 0;
-            text-shadow: 4px 4px 2px #04477A;
+            text-shadow: 4px 4px 2px #04477a;
             text-align: center;
           }
           .batch-name {
@@ -105,7 +114,7 @@ const Batch: React.FC<{ batch: BatchProps, position: String }> = ({ batch, posit
             span {
               font-size: 40px;
               margin: 0 4px;
-              color: #FFF6B0;
+              color: #fff6b0;
             }
           }
           .info {
