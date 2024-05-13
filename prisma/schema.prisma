@@ -73,3 +73,8 @@ model User {
   updatedAt     DateTime  @updatedAt @map(name: "updated_at")
   @@map(name: "users")
 }
+
+model Battle {
+  id      String    @default(cuid()) @id
+  summary String
+}

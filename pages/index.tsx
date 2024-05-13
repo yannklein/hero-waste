@@ -41,24 +41,32 @@ export const getStaticProps: GetStaticProps = async () => {
     batch.isSorter = sortingRate > 0.5;
   }
 
+  let summaryContent = await prisma.battle.findFirst({
+    select: {
+      summary: true
+    }
+  });
+  summaryContent = summaryContent.summary
+
   const winner = await prisma.batch.winningBatch();
 
   return {
-    props: { batches, winner },
+    props: { batches, winner, summaryContent },
   };
 };
 
 type Props = {
   winner: BatchProps;
+  summaryContent: string;
   batches: BatchProps[];
 };
 
-const Dashboard: React.FC<Props> = ({ batches, winner }) => {
+const Dashboard: React.FC<Props> = ({ batches, winner, summaryContent }) => {
   const [showSummary, setShowSummary] = React.useState(false);
   const [newSummary, setNewSummary] = React.useState(new Date().getDay() === 1);
   let summary;
   if (showSummary) {
-    summary = <DaySummary setShowSummary={setShowSummary}/>
+    summary = <DaySummary setShowSummary={setShowSummary} content={summaryContent}/>
   }
   return (
     <Layout>

@@ -1,5 +1,6 @@
 type Props = {
   setShowSummary: Function;
+  content: string;
 };
 
 const DaySummary: React.FC<Props> = (props) => {
@@ -11,13 +12,15 @@ const DaySummary: React.FC<Props> = (props) => {
       <div onClick={close} className="overlay"></div>
       <div className="frame">
         <div className="title">Summary of the week 😼</div>
-        <div>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptates
-          consequuntur quos modi iure delectus, eos, ex adipisci sed
-          voluptatibus, sequi excepturi. Modi qui, unde obcaecati magni eveniet
-          dolor quia voluptatem?
+        <div dangerouslySetInnerHTML={{ __html: props.content.replace(/\\n/g, "<br><br>").replace(/\\/g, "") }}>
         </div>
       </div>
+      <style>{`
+        strong {
+          color: #065d9b;
+        }
+      `}
+      </style>
       <style jsx>{`
         .overlay {
           position: fixed;
@@ -42,7 +45,7 @@ const DaySummary: React.FC<Props> = (props) => {
           transform: translate(-50%, -50%);
           border-radius: 8px;
           padding: 24px;
-          font-size: 24px;
+          font-size: 16px;
           .title {
             text-align: center;
             position: relative;
