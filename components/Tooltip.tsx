@@ -23,17 +23,15 @@ export default function Tooltip({ message, position, children }) {
               border-radius: 4px;
               min-width: 170px;
               width: 25vw;
-              box-shadow: 0px 0px 16px rgba(0,0,0,0.7);
+              box-shadow: 0px 0px 16px black;
             }
           }
           .tooltip:hover .message {
             display: block;
-            }
           }
           @media (min-width: 900px) {
             .tooltip .message {
-                top: 80px;
-              }
+              top: 80px;
             }
           }
         `}
