@@ -2,7 +2,7 @@ type Props = {
   
 };
 
-const Award: React.FC<Props> = (props)
+const DaySummary: React.FC<Props> = (props) => {
   return (
     <div>
       
