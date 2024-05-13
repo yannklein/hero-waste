@@ -4,6 +4,40 @@ import prisma from '../../lib/prisma';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
+    const results = {"WEB": {}, "DATA": {}};
+
+    const batches = await prisma.batch.findMany({
+      include: {
+        disposals: {},
+      },
+      where: {
+        startDate: {
+          lte: new Date(),
+        },
+        endDate: {
+          gte: new Date(),
+        },
+      },
+    });
+    for (let batch of batches) {
+      results[batch.category]["missorted trashes"] = await prisma.batch.prevWeekPenalties(batch);
+      results[batch.category]["total trashes vs the normal amount"] = await prisma.batch.prevWeekDisposal(batch, 1) - 4;
+      results[batch.category]["trash sorting ratio"] = await prisma.batch.sortingRate(batch);
+    }
+
+    // const results = { 
+    //   WEB: {
+    //     "missorted trashes": 5,
+    //     "total trashes vs the normal amount": 2,
+    //     "trash sorting ratio": 1/3  
+    //   },
+    //   DATA: {
+    //     "missorted trashes": 0,
+    //     "total trashes vs the normal amount": 1,
+    //     "trash sorting ratio": 2/3  
+    //   }
+    // }
+
     const openai = new OpenAI({
       apiKey: process.env.OPENAI_API_KEY
     });
@@ -14,18 +48,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       Your judgement is often harsh but funny as well. 
       You are roasting the teams when they have a lot of of waste or forget to sort them but you also give nice compliments when they do better.
     `;
-    const results = { 
-      WEB: {
-        "missorted trashes": 5,
-        "total trashes vs the normal amount": 2,
-        "trash sorting ratio": 1/3  
-      },
-      DATA: {
-        "missorted trashes": 0,
-        "total trashes vs the normal amount": 1,
-        "trash sorting ratio": 2/3  
-      }
-    }
+    
     let serialResult = "" 
     Object.keys(results).forEach((team) => {
       Object.entries(results[team]).forEach((result) => {
