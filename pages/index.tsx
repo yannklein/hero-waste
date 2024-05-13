@@ -11,6 +11,8 @@ import lightning from '../public/lightning.png';
 import { DisposalCategory } from '@prisma/client';
 import DaySummary from '../components/DaySummary';
 import Button from '../components/Button';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCertificate } from '@fortawesome/free-solid-svg-icons';
 
 export const getStaticProps: GetStaticProps = async () => {
   const batches = await prisma.batch.findMany({
@@ -90,7 +92,14 @@ const Dashboard: React.FC<Props> = ({ batches, winner }) => {
               }}
             />
           </main>
-          <Button href="/"  name="✨ Week Summary" onClick={() => setShowSummary(true)} />
+          <div className="summary">
+            
+            <div className="new animate__animated animate__tada">
+              <FontAwesomeIcon className="certificate" icon={faCertificate} />
+              <div>New</div>
+            </div>
+            <Button href="/"  name="✨ Week Summary" onClick={() => setShowSummary(true)} />
+          </div>
         </div>
       </div>
       <style jsx>{`
@@ -128,6 +137,27 @@ const Dashboard: React.FC<Props> = ({ batches, winner }) => {
         }
         .loser {
           transform: translateY(-20px)
+        }
+        .summary {
+          position: relative;
+          .new {
+            position: absolute;
+            top: -8px;
+            left: -24px;
+            color: #081834;
+            border-radius: 8px;
+            font-size: 24px;
+            padding: 16px;
+            svg {
+              color: #fff6b0;
+              position: absolute;
+              top: 0;
+              left: 0;
+              width: 100%;
+              height: 100%;
+              z-index: -1;
+            }
+          }
         }
       `}</style>
     </Layout>
