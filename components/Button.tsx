@@ -2,7 +2,7 @@ import { MouseEventHandler } from "react";
 
 type Props = {
   name: String;
-  href: string;
+  href?: string;
   onClick?: MouseEventHandler<HTMLAnchorElement>;
 }
 

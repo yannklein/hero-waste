@@ -67,6 +67,7 @@ type Props = {
 const Dashboard: React.FC<Props> = ({ batches, winner, summaryContent }) => {
   const [showSummary, setShowSummary] = React.useState(false);
   const [newSummary, setNewSummary] = React.useState(new Date().getDay() === 1);
+
   let summary;
   if (showSummary) {
     summary = <DaySummary setShowSummary={setShowSummary} content={summaryContent}/>
@@ -110,7 +111,7 @@ const Dashboard: React.FC<Props> = ({ batches, winner, summaryContent }) => {
               <FontAwesomeIcon className="certificate" icon={faCertificate} />
               <div>New</div>
             </div>
-            <Button href="/"  name="✨ Week Summary" onClick={() => {setShowSummary(true); setNewSummary(false)}} />
+            <Button name="✨ Week Summary" onClick={() => {setShowSummary(true)}} />
           </div>
         </div>
       </div>
