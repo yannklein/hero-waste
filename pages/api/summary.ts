@@ -3,7 +3,9 @@ import OpenAI from 'openai';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
-    const openai = new OpenAI();
+    const openai = new OpenAI({
+      apiKey: process.env.OPENAI_API_KEY
+    });
 
     const role = `
       You are the mastermind of a game that aims to save the planet by reducing waste. 
