@@ -4,6 +4,7 @@ import Layout from "../../components/Layout"
 import prisma from '../../lib/prisma';
 import TrashCan, { TrashCanProps } from "../../components/TrashCan";
 import Link from "next/link";
+import Button from "../../components/Button"
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const trashCans = await prisma.trashCan.findMany({
@@ -30,7 +31,7 @@ const TrashCans: React.FC<Props> = ({trashCans}) => {
           { trashCans.map( trashCan => <TrashCan key={trashCan.id} trashCan={trashCan}/>)}
         </div>
         <Link href="/" legacyBehavior>
-            <a className="back" href="#">Dashboard</a>
+          <Button href="/"  name="Dashboard" />
         </Link>
       </div>
       <style jsx>{`

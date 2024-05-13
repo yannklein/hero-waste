@@ -9,6 +9,8 @@ import Batch, { BatchProps } from '../components/Batch';
 
 import lightning from '../public/lightning.png';
 import { DisposalCategory } from '@prisma/client';
+import DaySummary from '../components/DaySummary';
+import Button from '../components/Button';
 
 export const getStaticProps: GetStaticProps = async () => {
   const batches = await prisma.batch.findMany({
@@ -50,8 +52,14 @@ type Props = {
 };
 
 const Dashboard: React.FC<Props> = ({ batches, winner }) => {
+  const [showSummary, setShowSummary] = React.useState(false);
+  let summary;
+  if (showSummary) {
+    summary = <DaySummary setShowSummary={setShowSummary}/>
+  }
   return (
     <Layout>
+      {summary}
       <Header />
       <div className="frame">
         <div className="page">
@@ -82,6 +90,7 @@ const Dashboard: React.FC<Props> = ({ batches, winner }) => {
               }}
             />
           </main>
+          <Button href="/"  name="✨ Week Summary" onClick={() => setShowSummary(true)} />
         </div>
       </div>
       <style jsx>{`
