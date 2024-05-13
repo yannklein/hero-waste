@@ -1,5 +1,6 @@
 import { NextApiRequest, NextApiResponse } from 'next';
 import OpenAI from 'openai';
+import prisma from '../../lib/prisma';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
   try {
@@ -46,7 +47,11 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       ],
       model: 'gpt-3.5-turbo',
     });
-    res.json(completion.choices[0]);
+    const data = {
+      summary: completion.choices[0].message.content
+    };
+    const battle = await prisma.battle.create({ data });
+    res.json(battle);
   } catch (error) {
     console.error(error);
   }
