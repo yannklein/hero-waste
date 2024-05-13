@@ -29,7 +29,7 @@ type Props = {
 
 const Award: React.FC<Props> = (props) => {
   return (
-    <Tooltip position={props.position} message={props.tooltipMessage}>
+    <Tooltip category={AwardCategory[props.category]} position={props.position} message={props.tooltipMessage}>
     <div className="frame">
       <FontAwesomeIcon icon={faAward} />
       <Image
