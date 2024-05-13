@@ -44,6 +44,9 @@ export const getStaticProps: GetStaticProps = async () => {
   let summaryContent = await prisma.battle.findFirst({
     select: {
       summary: true
+    },
+    orderBy: {
+      createdAt: 'desc',
     }
   });
   summaryContent = summaryContent.summary
