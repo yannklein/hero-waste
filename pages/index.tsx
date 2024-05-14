@@ -111,7 +111,7 @@ const Dashboard: React.FC<Props> = ({ batches, winner, summaryContent }) => {
               <FontAwesomeIcon className="certificate" icon={faCertificate} />
               <div>New</div>
             </div>
-            <Button name="✨ Week Summary" onClick={() => {setShowSummary(true)}} />
+            <Button name="✨ Week Summary" onClick={() => {setShowSummary(true); setNewSummary(false)}} />
           </div>
         </div>
       </div>
