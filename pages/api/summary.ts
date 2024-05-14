@@ -3,6 +3,9 @@ import OpenAI from 'openai';
 import prisma from '../../lib/prisma';
 
 export default async (req: NextApiRequest, res: NextApiResponse) => {
+  // if (req.headers.get('Authorization') !== `Bearer ${process.env.CRON_SECRET}`) {
+  //   return res.status(401).end('Unauthorized');
+  // }
   try {
     const results = {"WEB": {}, "DATA": {}};
 
