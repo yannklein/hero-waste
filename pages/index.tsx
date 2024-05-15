@@ -28,6 +28,7 @@ export const getStaticProps: GetStaticProps = async () => {
       },
     },
   });
+  let bestScore = 0;
   for (let batch of batches) {
     batch.penaltyCount = await prisma.disposal.count({ 
       where: { category: DisposalCategory['PENALTY'], batchId: batch.id}
@@ -39,6 +40,7 @@ export const getStaticProps: GetStaticProps = async () => {
     batch.trend = batch.thisWeekDisposals - batch.lastWeekDisposals;
     batch.isNoPenalty = penaltyCount === 0;
     batch.isSorter = sortingRate > 0.5;
+    bestScore = Math.max(batch.score, bestScore);
   }
 
   let summaryContent = await prisma.battle.findFirst({
@@ -50,11 +52,8 @@ export const getStaticProps: GetStaticProps = async () => {
     }
   });
   summaryContent = summaryContent.summary
-
-  const winner = await prisma.batch.winningBatch();
-
   return {
-    props: { batches, winner, summaryContent },
+    props: { batches, bestScore, summaryContent },
   };
 };
 
@@ -64,7 +63,7 @@ type Props = {
   batches: BatchProps[];
 };
 
-const Dashboard: React.FC<Props> = ({ batches, winner, summaryContent }) => {
+const Dashboard: React.FC<Props> = ({ batches, bestScore, summaryContent }) => {
   const [showSummary, setShowSummary] = React.useState(false);
   const [newSummary, setNewSummary] = React.useState(new Date().getDay() === 1);
 
@@ -84,7 +83,7 @@ const Dashboard: React.FC<Props> = ({ batches, winner, summaryContent }) => {
               <div
                 key={batch.id}
                 className={`batch ${
-                  winner.id === batch.id ? 'winner' : 'loser'
+                  bestScore === batch.score ? 'winner' : 'loser'
                 }`}
               >
                 <Batch batch={batch} position={index === 0 ? 'left': 'right'} />
