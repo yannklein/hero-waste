@@ -32,11 +32,11 @@ export const getStaticProps: GetStaticProps = async () => {
     batch.penaltyCount = await prisma.disposal.count({ 
       where: { category: DisposalCategory['PENALTY'], batchId: batch.id}
     });
-    batch.lastWeekDisposals = await prisma.batch.prevWeekDisposal(batch, 1);
-    const twoWeeksAgoDisp = await prisma.batch.prevWeekDisposal(batch, 2);
+    batch.thisWeekDisposals = await prisma.batch.prevWeekDisposal(batch, 1);
+    batch.lastWeekDisposals = await prisma.batch.prevWeekDisposal(batch, 2);
     const penaltyCount = await prisma.batch.prevWeekPenalties(batch);
     const sortingRate = await prisma.batch.sortingRate(batch);
-    batch.trend = batch.lastWeekDisposals - twoWeeksAgoDisp;
+    batch.trend = batch.thisWeekDisposals - batch.lastWeekDisposals;
     batch.isNoPenalty = penaltyCount === 0;
     batch.isSorter = sortingRate > 0.5;
   }

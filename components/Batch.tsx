@@ -11,6 +11,7 @@ export type BatchProps = {
   size: Number;
   score: Number;
   trend: Number;
+  thisWeekDisposals: number;
   lastWeekDisposals: number;
   penaltyCount: Number;
   isNoPenalty: Boolean;
@@ -64,10 +65,9 @@ const Batch: React.FC<{ batch: BatchProps; position: String }> = ({
             🏆 <span>{batch.score}</span> / 100
           </p>
           <p className="info">
-            🚮 {batch.disposals.length} ({batch.lastWeekDisposals} this week{' '}
-            {trendIcon})
+            🚮 {batch.thisWeekDisposals} trash(es) this week {trendIcon}
           </p>
-          <p className="info">🤢 {batch.penaltyCount} penalties</p>
+          <p className="info">{batch.penaltyCount == 0 ? "👍" : "🤢"} {batch.penaltyCount} penalties</p>
         </div>
         <div className={`awards ${position}`}>{awards}</div>
       </div>
