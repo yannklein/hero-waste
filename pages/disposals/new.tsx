@@ -4,10 +4,12 @@ import { useSearchParams } from 'next/navigation';
 import Layout from '../../components/Layout';
 import Header from '../../components/Header';
 import { BatchCategory, TrashCategory } from '@prisma/client';
+import Loader from '../../components/Loader';
 
 
 const NewDisposal: React.FC = () => {
   const [displayPopup, setDisplayPopup] = React.useState(false);
+  const [loading, setLoading] = React.useState(false);
   
   const searchParams = useSearchParams();
   const batchCategory = BatchCategory[searchParams.get('batch')?.toUpperCase()];
@@ -15,6 +17,7 @@ const NewDisposal: React.FC = () => {
   
   const handClick = async (category) => {
     try {
+      setLoading(true);
       const data = {
         category: category,
         batchCategory: batchCategory,
@@ -26,8 +29,11 @@ const NewDisposal: React.FC = () => {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(data),
       });
+      console.log(loading);
+      
       const disposal = await response.json()
       setDisplayPopup(() => !displayPopup);
+      setLoading(false);
 
     } catch (error) {
       console.error(error);
@@ -36,6 +42,7 @@ const NewDisposal: React.FC = () => {
 
   return (
     <Layout>
+      <Loader show={loading}/>
       <Header />
       <div className="frame">
         <h1>
