@@ -58,7 +58,7 @@ export const getStaticProps: GetStaticProps = async () => {
 };
 
 type Props = {
-  winner: BatchProps;
+  bestScore: Number;
   summaryContent: string;
   batches: BatchProps[];
 };
@@ -145,10 +145,10 @@ const Dashboard: React.FC<Props> = ({ batches, bestScore, summaryContent }) => {
           
         }
         .winner {
-          transform: translateY(20px)
+          transform: translateY(-20px)
         }
         .loser {
-          transform: translateY(-20px)
+          transform: translateY(20px)
         }
         .summary {
           position: relative;
