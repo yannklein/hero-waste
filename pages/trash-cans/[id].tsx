@@ -28,7 +28,7 @@ const TrashCan: React.FC<TrashCanProps> = (props) => {
   return (
     <div className={`frame ${bangers.className}`}>
       <div className="info">🗑️ {props.batchCategory}- {props.category}</div>
-      <div className="info">Replacing a trash bag?<br/> Scan this barcode and follow the instructions! 🙏</div>
+      <div className="info">Are you replacing a trash bag?<br/> Scan this barcode and follow the instructions! 🙏</div>
       
       <QRCodeSVG size={400} className="qrcode" value={url} />
       <style jsx>{`
