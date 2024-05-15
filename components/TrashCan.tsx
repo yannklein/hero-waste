@@ -16,7 +16,7 @@ export type TrashCanProps = {
 };
 
 const TrashCan: React.FC<{ trashCan: TrashCanProps }> = ({ trashCan }) => {  
-  const url = `http://${process.env.VERCEL_PROJECT_PRODUCTION_URL}/disposals/new?trash=${trashCan.category}&batch=${trashCan.batchCategory}`;
+  const url = `http://${process.env.WEBSITE_URL}/disposals/new?trash=${trashCan.category}&batch=${trashCan.batchCategory}`;
   return (
     <>
       <div

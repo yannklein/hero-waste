@@ -23,7 +23,7 @@ export const getServerSideProps: GetServerSideProps = async ({ params }) => {
 };
 
 const TrashCan: React.FC<TrashCanProps> = (props) => {  
-  const url = `http://${process.env.VERCEL_PROJECT_PRODUCTION_URL}/disposals/new?trash=${props.category}&batch=${props.batchCategory}`;
+  const url = `http://${process.env.WEBSITE_URL}/disposals/new?trash=${props.category}&batch=${props.batchCategory}`;
   
   return (
     <div className={`frame ${bangers.className}`}>
