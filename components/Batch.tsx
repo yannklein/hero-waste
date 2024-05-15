@@ -30,9 +30,9 @@ const Batch: React.FC<{ batch: BatchProps; position: String }> = ({
 }) => {
   let trendIcon = '🟰';
   if (batch.trend > new Number(0)) {
-    trendIcon = '🔺';
+    trendIcon = '📈';
   } else if (batch.trend < new Number(0)) {
-    trendIcon = '🔽';
+    trendIcon = '📉';
   }
   let awards = [];
   if (batch.isNoPenalty) {
@@ -65,7 +65,7 @@ const Batch: React.FC<{ batch: BatchProps; position: String }> = ({
             🏆 <span>{batch.score}</span> / 100
           </p>
           <p className="info">
-            🚮 {batch.thisWeekDisposals} trash(es) this week {trendIcon}
+            {trendIcon} {batch.thisWeekDisposals} trash(es) this week
           </p>
           <p className="info">{batch.penaltyCount == 0 ? "👍" : "🤢"} {batch.penaltyCount} penalties</p>
         </div>
