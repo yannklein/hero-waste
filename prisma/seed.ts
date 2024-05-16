@@ -55,9 +55,9 @@ async function main() {
       },
     });
 
-    for (let i = 0; i < randInt(10, 20); i += 1) {
-      createDisposal(batch, trashCan);
-    }
+    // for (let i = 0; i < randInt(10, 20); i += 1) {
+    //   createDisposal(batch, trashCan);
+    // }
   };
 
   const createDisposal = async (batch, trashCan) => {
@@ -78,6 +78,7 @@ async function main() {
   console.log('Create WEB and DATA batches');
   const webBatch = await prisma.batch.create({
     data: {
+      lineId: "",
       name: '#1638 - #1616',
       size: 43,
       startDate: new Date(Date.parse('2024-03-22T15:00:00.000Z')),
@@ -90,6 +91,7 @@ async function main() {
 
   const dataBatch = await prisma.batch.create({
     data: {
+      lineId: "",
       name: '#1638 - #1616',
       size: 31,
       startDate: new Date(Date.parse('2024-03-22T15:00:00.000Z')),

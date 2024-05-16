@@ -126,9 +126,7 @@ prisma = new PrismaClient()
             },
           });
         },
-        async prevWeekDisposal(batch: Batch, weekAgo: number = 1) {
-          console.log(add(new Date(), { weeks: 1 - weekAgo }));
-          
+        async prevWeekDisposal(batch: Batch, weekAgo: number = 1) {          
           return await prisma.disposal.count({
             where: {
               batchId: batch.id,

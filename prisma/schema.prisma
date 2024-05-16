@@ -38,6 +38,7 @@ model TrashCan {
 
 model Batch {
   id            String    @default(cuid()) @id
+  lineId        String
   name          String
   size          Int
   startDate     DateTime @map(name: "start_date")
@@ -75,8 +76,8 @@ model User {
 }
 
 model Battle {
-  id      String    @default(cuid()) @id
-  summary String
+  id            String    @default(cuid()) @id
+  summary       String
   createdAt     DateTime  @default(now()) @map(name: "created_at")
   updatedAt     DateTime  @updatedAt @map(name: "updated_at")
 }
