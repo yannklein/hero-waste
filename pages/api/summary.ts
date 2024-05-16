@@ -60,7 +60,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
     })
     const message = `
     The game has 2 teams the WEB team and the DATA team.
-    Create a 140 words summary of what happened during the week using only the following results:
+    Create a 70 words summary of what happened during the week using only the following results:
     [RESULTS START]${results}[RESULTS END].
     According to these results only you should roast the teams for their poor waste management results and congratulate their good ones otherwise. Do not invent results.
     Your output should consist of the summary only. Do not use RESULTS START or RESULTS END in the summary.
