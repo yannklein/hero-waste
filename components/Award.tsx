@@ -61,7 +61,7 @@ const Award: React.FC<Props> = (props) => {
           font-size: 40px;
         }
       }
-      @media (min-width: 900px) {
+      @media (min-width: 1000px) {
         .frame {
           width: 64px;
           height: 64px;
