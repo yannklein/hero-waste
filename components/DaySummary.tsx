@@ -44,13 +44,13 @@ const DaySummary: React.FC<Props> = (props) => {
           left: 50%;
           transform: translate(-50%, -50%);
           border-radius: 8px;
-          padding: 24px;
-          font-size: 16px;
+          padding: 32px;
+          font-size: 24px;
           .title {
             text-align: center;
             position: relative;
             font-size: 32px;
-            margin-bottom: 24px;
+            margin-bottom: 40px;
           }
           .title::before {
             content: '';
