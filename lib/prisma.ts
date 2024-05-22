@@ -101,14 +101,13 @@ prisma = new PrismaClient()
           }
           return 1 - burnableCount / amountDisposals;
         },
-        async prevWeekPenalties(batch: Batch, weekAgo = 1) {
+        async penaltiesSinceMonday(batch: Batch) {
           return await prisma.disposal.count({
             where: {
               category: DisposalCategory['PENALTY'],
               batchId: batch.id,
               createdAt: {
-                gte: add(new Date(), { weeks: -weekAgo }),
-                lte: add(new Date(), { weeks: 1 - weekAgo }),
+                gte: previousMonday(new Date()),
               },
             },
           });

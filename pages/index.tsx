@@ -36,7 +36,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
     // Disposals two weeks ago
     batch.lastWeekDisposals = await prisma.batch.prevWeekDisposal(batch, 2);
     // Penalties last week
-    batch.penaltyCount = await prisma.batch.prevWeekPenalties(batch);
+    batch.penaltyCount = await prisma.batch.penaltiesSinceMonday(batch);
     // Sorting rate (1 - burnable/all_trash) last week
     const sortingRate = await prisma.batch.sortingRate(batch);    
     // Trend 2weeks ago vs last week

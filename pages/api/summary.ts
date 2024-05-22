@@ -29,7 +29,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
       },
     });
     for (let batch of batches) {
-      const penalties = await prisma.batch.prevWeekPenalties(batch);
+      const penalties = await prisma.batch.penaltiesSinceMonday(batch);
       if (penalties === 0) {
         results[batch.category].push("no missorted trashes");
       } else if (penalties <= 2) {
