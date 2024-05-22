@@ -48,7 +48,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
         results[batch.category].push("more trashes than average an tokyoite");
       }
       const sortingRate = await prisma.batch.sortingRate(batch);
-      if (sortingRate < 0.6) {
+      if (sortingRate < 0.1) {
         results[batch.category].push("poorly sorted trashes");
       } else {
         results[batch.category].push("well sorted trashes");
