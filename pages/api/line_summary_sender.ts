@@ -65,7 +65,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             },
             {
               type: 'text',
-              text: "ℹ️ don't take the following personnaly, I am an AI programmed to be extra sassy 😽",
+              text: "ℹ️ don't take the following personally, I am an AI programmed to be extra sassy 😽",
               wrap: true,
               size: 'xxs',
               margin: 'xl',

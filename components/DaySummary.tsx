@@ -12,6 +12,7 @@ const DaySummary: React.FC<Props> = (props) => {
       <div onClick={close} className="overlay"></div>
       <div className="frame">
         <div className="title">Summary of the week 😼</div>
+        <p className="disclamer" >ℹ️ The following summary is generated via AI and programmed to be funny and extra sassy. Do not take it personally or seriously and don't hesitate to contact us if any problem. </p>
         <div dangerouslySetInnerHTML={{ __html: props.content.replace(/\\n/g, "<br><br>").replace(/\\/g, "") }}>
         </div>
       </div>
@@ -31,6 +32,10 @@ const DaySummary: React.FC<Props> = (props) => {
           right: 0;
           background-color: black;
           opacity: 50%;
+        }
+        .disclamer {
+          font-size: 12px;
+          line-height: 1em;
         }
         .frame {
           transition: 2s;
