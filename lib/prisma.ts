@@ -6,7 +6,7 @@ import {
   PrismaClient,
   TrashCategory,
 } from '@prisma/client';
-import { add } from 'date-fns';
+import { add, previousMonday } from 'date-fns';
 import TrashCan from '../components/TrashCan';
 
 let prisma;
@@ -29,19 +29,6 @@ prisma = new PrismaClient()
     result: {
       batch: {
         lastWeekDisposals: {
-          // include: {
-          //   disposals: {
-          //     where: {
-          //       createdAt: {
-          //         gte: add(new Date(), { weeks: -1 }),
-          //         lte: new Date(),
-          //       },
-          //     }
-          //   }
-          // },
-          // compute(batch: BatchExtended) {
-          //   return batch.disposals.length
-          // },
           include: {
             disposals: true,
           },
@@ -122,6 +109,16 @@ prisma = new PrismaClient()
               createdAt: {
                 gte: add(new Date(), { weeks: -weekAgo }),
                 lte: add(new Date(), { weeks: 1 - weekAgo }),
+              },
+            },
+          });
+        },
+        async disposalsSinceMonday(batch: Batch) {                    
+          return await prisma.disposal.count({
+            where: {
+              batchId: batch.id,
+              createdAt: {
+                gte: previousMonday(new Date())
               },
             },
           });

@@ -32,6 +32,7 @@ export const getServerSideProps: GetServerSideProps = async () => {
   for (let batch of batches) {
     // Disposals last week
     batch.thisWeekDisposals = await prisma.batch.prevWeekDisposal(batch, 1);
+    batch.disposalsSinceMonday = await prisma.batch.disposalsSinceMonday(batch);
     // Disposals two weeks ago
     batch.lastWeekDisposals = await prisma.batch.prevWeekDisposal(batch, 2);
     // Penalties last week
