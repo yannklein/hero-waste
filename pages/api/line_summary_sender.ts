@@ -55,7 +55,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
             },
             {
               type: 'text',
-              text: 'Hi team! This is Nyan from hero-Waste 😼  I have been checking your trashes this week and here is my feedback.',
+              text: 'Hi team! This is Nyan from Hero-Waste 😼  I have been checking your bootcamp trashes this week and here is my feedback.',
               wrap: true,
               margin: 'lg',
             },
@@ -67,7 +67,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
               type: 'text',
               text: "ℹ️ don't take the following personnaly, I am an AI programmed to be extra sassy 😽",
               wrap: true,
-              size: 'xs',
+              size: 'xxs',
               margin: 'xl',
             },
             {
