@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
 import Layout from '../../components/Layout';
 import Header from '../../components/Header';
-import { BatchCategory, TrashCategory } from '@prisma/client';
+import { BatchCategory, DisposalCategory, TrashCategory } from '@prisma/client';
 import Loader from '../../components/Loader';
 
 
@@ -48,10 +48,10 @@ const NewDisposal: React.FC = () => {
         <h1>
           {batchCategory} - {trashCategory} 🗑️{' '}
         </h1>
-        <a className="button regular" onClick={() => handClick('regular')}>
+        <a className="button regular" onClick={() => handClick(DisposalCategory['REGULAR'])}>
           Bag changed! 😎✅
         </a>
-        <a className="button penalty" onClick={() => handClick('penalty')}>
+        <a className="button penalty" onClick={() => handClick(DisposalCategory['PENALTY'])}>
           Bag changed BUT I found missorted garbage... 🤢
         </a>
       </div>
