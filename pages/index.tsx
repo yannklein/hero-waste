@@ -30,16 +30,21 @@ export const getServerSideProps: GetServerSideProps = async () => {
   });
   let bestScore = 0;
   for (let batch of batches) {
-    batch.penaltyCount = await prisma.disposal.count({ 
-      where: { category: DisposalCategory['PENALTY'], batchId: batch.id}
-    });
+    // Disposals last week
     batch.thisWeekDisposals = await prisma.batch.prevWeekDisposal(batch, 1);
+    // Disposals two weeks ago
     batch.lastWeekDisposals = await prisma.batch.prevWeekDisposal(batch, 2);
-    const penaltyCount = await prisma.batch.prevWeekPenalties(batch);
-    const sortingRate = await prisma.batch.sortingRate(batch);
+    // Penalties last week
+    batch.penaltyCount = await prisma.batch.prevWeekPenalties(batch);
+    // Sorting rate (1 - burnable/all_trash) last week
+    const sortingRate = await prisma.batch.sortingRate(batch);    
+    // Trend 2weeks ago vs last week
     batch.trend = batch.thisWeekDisposals - batch.lastWeekDisposals;
-    batch.isNoPenalty = penaltyCount === 0;
-    batch.isSorter = sortingRate > 0.5;
+    // isNoPenalty is true if there was no penalities this week
+    batch.isNoPenalty = batch.penaltyCount === 0;
+    // isNoPenalty is true if the ratio sorted/all_trash is greater than 30%
+    batch.isSorter = sortingRate > 0.3;
+    // best score out of the two batches
     bestScore = Math.max(batch.score, bestScore);
   }
 

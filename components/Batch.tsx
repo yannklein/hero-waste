@@ -53,7 +53,7 @@ const Batch: React.FC<{ batch: BatchProps; position: String }> = ({
       />,
     );
   }
-  if (batch.lastWeekDisposals < 4) {
+  if (batch.thisWeekDisposals < 4) {
     awards.push(
       <Award
         position={position}

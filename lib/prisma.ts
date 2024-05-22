@@ -109,7 +109,7 @@ prisma = new PrismaClient()
               },
             },
           });
-          if (amountDisposals) {
+          if (amountDisposals === 0) {
             return 1;
           }
           return 1 - burnableCount / amountDisposals;
