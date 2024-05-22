@@ -19,7 +19,7 @@ export default async (req: NextApiRequest, res: NextApiResponse) => {
           aspectMode: 'cover',
           action: {
             type: 'uri',
-            uri: 'https://line.me/',
+            uri: 'https://hero-waste.vercel.app/',
           },
           position: 'relative',
         },
