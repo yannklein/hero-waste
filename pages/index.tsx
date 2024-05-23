@@ -8,7 +8,6 @@ import Header from '../components/Header';
 import Batch, { BatchProps } from '../components/Batch';
 
 import lightning from '../public/lightning.png';
-import { DisposalCategory } from '@prisma/client';
 import DaySummary from '../components/DaySummary';
 import Button from '../components/Button';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';

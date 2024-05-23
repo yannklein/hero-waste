@@ -6,7 +6,7 @@ import {
   PrismaClient,
   TrashCategory,
 } from '@prisma/client';
-import { add, previousMonday } from 'date-fns';
+import { add, previousSunday } from 'date-fns';
 import TrashCan from '../components/TrashCan';
 
 let prisma;
@@ -107,7 +107,7 @@ prisma = new PrismaClient()
               category: DisposalCategory['PENALTY'],
               batchId: batch.id,
               createdAt: {
-                gte: previousMonday(new Date()),
+                gte: previousSunday(new Date()),
               },
             },
           });
@@ -117,7 +117,7 @@ prisma = new PrismaClient()
             where: {
               batchId: batch.id,
               createdAt: {
-                gte: previousMonday(new Date())
+                gte: previousSunday(new Date())
               },
             },
           });

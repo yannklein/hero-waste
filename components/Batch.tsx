@@ -1,8 +1,6 @@
 import React, { useEffect } from 'react';
-import { GetStaticProps } from 'next';
 // import Router from 'next/router';
-import { BatchCategory, Disposal, DisposalCategory } from '@prisma/client';
-import prisma from '../lib/prisma';
+import { BatchCategory, Disposal } from '@prisma/client';
 import Award, { AwardCategory } from './Award';
 
 export type BatchProps = {
